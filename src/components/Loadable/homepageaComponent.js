@@ -19,8 +19,19 @@ const PassWordFormComponent = Loadable({
   }
 }
 
+const ProductMComponent = Loadable({
+  loader: () => import('../../containers/ProductM/index.js'),
+  loading: MyLoadingComponent,
+});
+ class ProductMLoadable extends React.Component {
+  render() {
+    return <ProductMComponent/>;
+  }
+}
+
 
 
 export {
         PassWordFormLoadable,
+        ProductMLoadable
       }

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 // import UserMsgForm from '../UserMsg/index.js';
 import {
            PassWordFormLoadable,
+           ProductMLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -160,7 +161,7 @@ class Navigation extends Component {
           </Header>
           <Content style={{ margin: '16px 16px', padding: 24, background: '#fff', minHeight:this.state.contentHeight,/*marginTop:80 */ }}>
             {
-                //  this.state.key === '3' ? <ClassStudyMaterialLoadable/> : null
+                 this.state.key === '1' ? <ProductMLoadable/> : null
             } 
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>
