@@ -5,7 +5,8 @@ import { withRouter } from 'react-router';
 // import UserMsgForm from '../UserMsg/index.js';
 import {
            PassWordFormLoadable,
-           ProductMLoadable
+           ProductMLoadable,
+           FirstProductDesignLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -15,7 +16,7 @@ const {SubMenu} = Menu;
 class Navigation extends Component {
   state = {
     collapsed: false,
-    key: '1',
+    key: '2',
     subKey : ['sub1'],
     showUser : 'none',
     contentHeight :　0,
@@ -163,6 +164,9 @@ class Navigation extends Component {
             {
                  this.state.key === '1' ? <ProductMLoadable/> : null
             } 
+            {
+              this.state.key === '2' ? <FirstProductDesignLoadable/> : null  
+            }
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2016 Created by Ant UED

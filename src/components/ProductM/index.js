@@ -1,5 +1,5 @@
 import React from 'react';
-import {TreeSelect,Button} from 'antd';
+import {TreeSelect,Button,Table} from 'antd';
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 class ProductM extends React.Component{
     render(){
@@ -60,6 +60,64 @@ class ProductM extends React.Component{
               width: 300
             },
           };
+          const columns = [
+            {
+                title: '产品编号/设计日期',
+                dataIndex: 'productNum',
+                key: 'name',
+            },
+            {
+                title: '服务状态',
+                dataIndex: 'serviceState',
+                key: 'serviceState',
+            },
+            {
+                title: '服务状态',
+                dataIndex: 'serviceState',
+                key: 'serviceState',
+            },
+            {
+                title: '总体',
+                dataIndex: 'population',
+                key: 'population',
+            },
+            {
+                title: '处理器',
+                dataIndex: 'cpu',
+                key: 'cpu',
+            },
+            {
+                title: '错题源',
+                dataIndex: 'errorSource',
+                key: 'errorSource',
+            },
+            {
+                title: '服务',
+                dataIndex: 'service',
+                key: 'service',
+            },
+            {
+                title: '文档交付',
+                dataIndex: 'documentDelivery',
+                key: 'documentDelivery',
+            },
+            {
+                title: '价格',
+                dataIndex: 'price',
+                key: 'price',
+            },
+            {
+                title: '其他信息',
+                dataIndex: 'otherMsg',
+                key: 'otherMsg',
+            },
+            {
+                title: '操作',
+                dataIndex: 'operation',
+                key: 'operation',
+            },
+        ]
+        const dataSource = []
         return(
             <div>
                 <div>
@@ -67,8 +125,18 @@ class ProductM extends React.Component{
                     <span style={{marginLeft:10}}>
                         <TreeSelect {...tProps} />
                     </span>
-                    <Button type='primary' style={{width:180,marginLeft:30}}>查询</Button>
+                    <Button type='primary' 
+                            style={{width:180,marginLeft:30}}
+                            onClick={this.props.queryHandle}>查询</Button>
                 </div>  
+                <div style={{marginTop:30}}>
+                    <Table columns={columns}
+                            bordered={true}
+                            pagination={false}
+                            dataSource={dataSource}
+                            scroll={{x:false,y:300}}
+                                />
+                </div>
             </div>
         )
     }

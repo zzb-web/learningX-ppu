@@ -13,5 +13,40 @@ body {
   width: 50px;
   text-align: right;
 }
-
-
+.title-large-content{
+  width: 90%;
+  height:100px;
+  background-color:#fff;
+  text-align: center;
+  line-height: 50px;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.title-large-content>div{
+  font-size:30px;
+  font-weight:500;
+}
+.title-2{
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  width: 5%;
+  text-align: right;
+  padding-right: 10px;
+}
+.mark{
+  float: left;
+  width: 30%;
+  height: 30px;
+  background-color: #fff;
+  border:1px solid #dadada;
+  border-right: none;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+  color: #000;
+}
+.mark:last-child{
+  border-right: 1px solid #dadada;
+}

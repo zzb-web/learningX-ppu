@@ -29,9 +29,19 @@ const ProductMComponent = Loadable({
   }
 }
 
+const FirstProductDesignComponent = Loadable({
+  loader: () => import('../../containers/FirstProductDesign/index.js'),
+  loading: MyLoadingComponent,
+});
+ class FirstProductDesignLoadable extends React.Component {
+  render() {
+    return <FirstProductDesignComponent/>;
+  }
+}
 
 
 export {
         PassWordFormLoadable,
-        ProductMLoadable
+        ProductMLoadable,
+        FirstProductDesignLoadable
       }
