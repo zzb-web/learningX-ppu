@@ -7,7 +7,7 @@ class AddService extends React.Component{
             <div style={{width:'100%',height:100,marginTop:20}}>
                 <div className='title-3'>附加服务:</div>
                 <div className='title-3-content'>
-                    111111
+                    
                 </div>
             </div>
         )

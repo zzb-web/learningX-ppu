@@ -7,11 +7,10 @@ class Detail extends React.Component{
             <div style={{width:'100%',height:100,marginTop:20}}>
                 <div className='title-3'>详情:</div>
                 <div className='title-detail-content'>
-                    <div style={{marginTop:20}}>
-                        <span>产品编号:</span>
-                    </div>
+                    <div>{this.props.msg}</div>
                     <Button type='primary' 
                             style={{width:120,position:'absolute',bottom:10,right:'7%'}}
+                            onClick={this.props.submitHandle}
                             >提交</Button>
                 </div>
             </div>

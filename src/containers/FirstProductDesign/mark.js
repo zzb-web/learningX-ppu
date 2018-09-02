@@ -4,6 +4,35 @@ class Mark extends React.Component{
     state = {
        selectIndex : 0
       }
+    componentWillMount(){
+        const {gradation,title,depth} = this.props;
+        let idx = 0
+        if(title === '层次'){
+            idx = gradation-1
+        }else if(title === '深度'){
+            idx = depth-1
+        }else{
+            idx = 0
+        }
+
+        this.setState({
+            selectIndex : idx
+        })
+    }
+    componentWillReceiveProps(nextProps){
+        const {gradation,title,depth} = nextProps;
+        let idx = 0
+        if(title === '层次'){
+            idx = gradation-1
+        }else if(title === '深度'){
+            idx = depth-1
+        }else{
+            idx = 0
+        }
+        this.setState({
+            selectIndex : idx
+        })
+    }
     markClick(value){
         this.setState({
             selectIndex : value[1]

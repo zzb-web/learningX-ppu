@@ -5,9 +5,10 @@ import {Get} from '../../fetch/data.js';
 class ProductM extends React.Component{
     state = {
         value: ['0-0-0'],
+        productData : [],
+        showTable : false
       }
       onChange = (value) => {
-        console.log('onChange ', value, arguments);
         this.setState({ value });
       }
       queryHandle(){
@@ -44,10 +45,25 @@ class ProductM extends React.Component{
           }
           let msg = `epu1=${epu1}&epu2=${epu2}&epu3=${epu3}&upscale=${upscale}&normal=${normal}&business=${business}`;
           Get(`/api/v3/staffs/products/?${msg}`).then(resp=>{
-              console.log(resp)
+              if(resp.status=== 200){
+                this.setState({
+                  productData : resp.data,
+                  showTable :true
+                })
+              }
           })
       }
+      operaHandle(productID,value){
+        if(value === 1){
+          this.props.setKey('2',1,productID)
+        }else if(value === 2){
+          this.props.setKey('2',2,productID)
+        }else{
+          alert('xxxxx')
+        }
+      }
     render(){
+      const {productData,value,showTable} = this.state;
         return(
             <div>
                 <Row>
@@ -56,7 +72,10 @@ class ProductM extends React.Component{
                         <ProductMComponent 
                             onChange={this.onChange.bind(this)}
                             queryHandle={this.queryHandle.bind(this)}
-                            value={this.state.value}/>
+                            operaHandle={this.operaHandle.bind(this)}
+                            value={value}
+                            productData={productData}
+                            showTable={showTable}/>
                     </Col>
                     <Col span={1}></Col>
                 </Row>

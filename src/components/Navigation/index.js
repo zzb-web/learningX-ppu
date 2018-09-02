@@ -6,7 +6,9 @@ import { withRouter } from 'react-router';
 import {
            PassWordFormLoadable,
            ProductMLoadable,
-           FirstProductDesignLoadable
+           FirstProductDesignLoadable,
+           PersonalInfoSureLoadable,
+          //  PersonalInfoConfigureLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -16,7 +18,7 @@ const {SubMenu} = Menu;
 class Navigation extends Component {
   state = {
     collapsed: false,
-    key: '2',
+    key: '3',
     subKey : ['sub1'],
     showUser : 'none',
     contentHeight :　0,
@@ -24,7 +26,11 @@ class Navigation extends Component {
     userName : '',
     phone:'',
     gender:'',
-    hideMenu : false
+    hideMenu : false,
+    msg : {
+      way : 0,
+      productID : ''
+    }
   };
   toggle = () => {
     this.setState({
@@ -91,8 +97,25 @@ class Navigation extends Component {
       subKey : e
     })
   }
+  setKey(value,way,productID){
+    const {msg} = this.state;
+    msg.way = way;
+    msg.productID = productID;
+    this.setState({
+      key : value,
+      msg : msg
+    })
+  }
+  resetWay(){
+    const {msg} = this.state;
+    msg.way = 0;
+    msg.productID = '';
+    this.setState({
+      msg : msg
+    })
+  }
   render() {
-    const {userName,hideMenu,subKey,key} = this.state;
+    const {userName,hideMenu,subKey,key,msg} = this.state;
     const {staffId} = sessionStorage
     return (
       <Layout>
@@ -133,9 +156,6 @@ class Navigation extends Component {
               <SubMenu key="sub2" title={<span><Icon type="book"/><span>个人产品配置</span></span>}>
                 <Menu.Item key="3">
                     <span>个人信息确认</span>
-                  </Menu.Item>
-                  <Menu.Item key="4">
-                    <span>个人产品配置</span>
                 </Menu.Item>
               </SubMenu>
               <SubMenu key="sub3" title={<span><Icon type="user"/><span>用户信息</span></span>}>
@@ -162,10 +182,14 @@ class Navigation extends Component {
           </Header>
           <Content style={{ margin: '16px 16px', padding: 24, background: '#fff', minHeight:this.state.contentHeight,/*marginTop:80 */ }}>
             {
-                 this.state.key === '1' ? <ProductMLoadable/> : null
+                 this.state.key === '1' ? <ProductMLoadable setKey={this.setKey.bind(this)}/> : null
             } 
             {
-              this.state.key === '2' ? <FirstProductDesignLoadable/> : null  
+              this.state.key === '2' ? <FirstProductDesignLoadable msg={msg} 
+                                                                   resetWay={this.resetWay.bind(this)}/> : null  
+            }
+            {
+              this.state.key === '3' ? <PersonalInfoSureLoadable/> : null
             }
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>

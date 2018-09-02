@@ -3,13 +3,13 @@ import {InputNumber,Select} from 'antd';
 import PriceComponent from '../../components/FirstProductDesign/price.js';
 const {Option} = Select;
 class Price extends React.Component{
-    errMark(value){
-        console.log(value)
+    priceHandle(value){
+        this.props.priceHandle(value)
     }
     render(){
         return(
             <div>
-                <PriceComponent/>
+                <PriceComponent priceHandle={this.priceHandle.bind(this)}/>
             </div>
         )
     }
