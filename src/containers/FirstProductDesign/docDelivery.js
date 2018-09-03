@@ -1,11 +1,22 @@
 import React from 'react';
 import DocDeliveryComponent from '../../components/FirstProductDesign/docDelivery.js';
 class DocDelivery extends React.Component{
-    state={
-        deliverType: '',
-        deliverPriority: 0,
-        deliverTime: ['','',''],
-        deliverExpected: 0,  
+    constructor(props){
+        super();
+        this.state={
+            deliverType: props.deliverType,
+            deliverPriority: props.deliverPriority,
+            deliverTime: props.deliverTime,
+            deliverExpected: props.deliverExpected,  
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            deliverType: nextProps.deliverType,
+            deliverPriority: nextProps.deliverPriority,
+            deliverTime: nextProps.deliverTime,
+            deliverExpected: nextProps.deliverExpected,  
+        })
     }
     deliveryType(value){
         this.setState({
@@ -28,17 +39,18 @@ class DocDelivery extends React.Component{
             day: value[1], 
             time:value[2]
         }
+        console.log(deliverTime);
         this.setState({
             deliverTime : deliverTime
         })
-        var newArr = [];
-        deliverTime.map((item,index)=>{
-            if(item !== ''&& item.day !==''&& item.time !==''){
-                newArr.push(item)
-            }
-        })
+        // var newArr = [];
+        // deliverTime.map((item,index)=>{
+        //     if(item !== ''&& item.day !==''&& item.time !==''){
+        //         newArr.push(item)
+        //     }
+        // })
         const {deliverType,deliverPriority,deliverExpected} = this.state;
-        this.props.deliverHandle([deliverType,deliverPriority,newArr,deliverExpected])
+        this.props.deliverHandle([deliverType,deliverPriority,deliverTime,deliverExpected])
     }
     deliverExpectedHandle(value){
         const deliverExpected = Number(value.split('小')[0]);
@@ -50,13 +62,15 @@ class DocDelivery extends React.Component{
     }
     render(){
         const {deliverType} = this.state;
+        console.log(this.state.deliverTime)
         return(
             <div>
                 <DocDeliveryComponent deliveryType={this.deliveryType.bind(this)}
                                       deliverType= {deliverType}
                                       deliverPriority={this.deliverPriority.bind(this)}
                                       deliverTimeHandle={this.deliverTimeHandle.bind(this)}
-                                      deliverExpectedHandle={this.deliverExpectedHandle.bind(this)}/>
+                                      deliverExpectedHandle={this.deliverExpectedHandle.bind(this)}
+                                      data={this.state}/>
             </div>
         )
     }

@@ -11,6 +11,7 @@ import OtherMsg from './otherMsg.js';
 import AddService from './addService.js';
 import Detail from './detail.js';
 import {Post,Get} from '../../fetch/data.js';
+import moment from 'moment';
 class FirstProductDesign extends React.Component{
     state = {
         problemCode:'E',
@@ -26,12 +27,12 @@ class FirstProductDesign extends React.Component{
         problemSource : [],
         serviceType: '',  // 服务类型
         serviceLauncher: '',  // 服务发起
-        serviceStartTime: '',  // 服务开始时间, unix时间戳
-        serviceEndTime: '',  // 服务结束时间, unix时间戳
+        serviceStartTime: (moment()/1000).valueOf(),  // 服务开始时间, unix时间戳
+        serviceEndTime: (moment()/1000).valueOf(),  // 服务结束时间, unix时间戳
         serviceTimes: 0,  // 服务次数
         serviceDuration: '',  // 服务时长
         deliverType: '',  // 交付类型
-        deliverPriority: 0,  // 交付优先级
+        deliverPriority: '',  // 交付优先级
         deliverTime: [{
             day: '',  // 周日0,周一到周六分别是1到6,
             time:'',  // 时间，格式按照"08:00:00"
@@ -42,8 +43,8 @@ class FirstProductDesign extends React.Component{
             day: '',  // 周日0,周一到周六分别是1到6,
             time:'',  // 时间，格式按照"08:00:00"
         }],   // 交付节点
-        deliverExpected: 0,  // 交付预期，预期多少小时内
-        price: 0,  // 单价
+        deliverExpected: '',  // 交付预期，预期多少小时内
+        price: '',  // 单价
         subject: '',  // 学科
         grade: '',  // 年级（全部直接用“全部”
         way : 0,
@@ -132,7 +133,6 @@ class FirstProductDesign extends React.Component{
                     newdeliverTime.push(item)
                 }
             })
-            console.log(deliverType);
             let deliverPriority_1 = 0;
             let deliverTime_1 = [];
             let deliverExpected_1 = 0;
@@ -206,6 +206,7 @@ class FirstProductDesign extends React.Component{
                         deliverPriority: e.deliverPriority, 
                         deliverTime:e.deliverTime,
                         deliverExpected: e.deliverExpected, 
+                        price : e.price,
                         subject: e.subject, 
                         grade: e.grade, 
                       })
@@ -234,6 +235,21 @@ class FirstProductDesign extends React.Component{
         服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}/交付类型:${deliverType}/
         交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}/交付预期:${deliverExpected}小时以内/价格:${price}元/
         学科:${subject}/年级:${grade}`;
+        const detailMsg = <div>
+                            <div><span>问题:错题学习</span></div>
+                            <div>{`层次:${gradations[gradation-1]}`}</div>
+                            <div>{`深度:${depths[depth-1]}`}</div>
+                            <div>{`总体:产品名称:${name}/产品级别:${level}/产品对象:${object}`}</div>
+                            <div>{`处理器:EPU:${EPUs[epu-1]}/题量控制:${problemMax}/纸张大小:${pageType}`}</div>
+                            <div>{`错题源:${problemSource}`}</div>
+                            <div>{`服务:服务类型:${serviceType}/服务发起:${serviceLauncher}/
+        服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}`}</div>
+                            <div>{`文档交付:交付类型:${deliverType}/
+        交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}/交付预期:${deliverExpected}小时以内`}</div>
+                            <div>{`价格:${price}元`}</div>
+                            <div>{`其他信息:学科:${subject}/年级:${grade}`}</div>
+                            
+                          </div>
         return(
             <div style={{backgroundColor:'#efefef',height:height-150,overflow:'auto'}}>
                 <Row>
@@ -246,15 +262,25 @@ class FirstProductDesign extends React.Component{
                         <Mark title='问题' textArr={['错题学习']} markClick={this.markClick.bind(this)}/>
                         <Mark title='层次' textArr={gradations} gradation={gradation} markClick={this.markClick.bind(this)}/>
                         <Mark title='深度' textArr={depths} depth={depth} markClick={this.markClick.bind(this)}/>     
-                        <Population populationHandle={this.populationHandle.bind(this)}/>
-                        <Cpu cpuHandle={this.cpuHandle.bind(this)}/>
-                        <ErrorSource errorSourceHandle={this.errorSourceHandle.bind(this)}/>
-                        <Service serviceHandle={this.serviceHandle.bind(this)}/>
-                        <DocDelivery deliverHandle={this.deliverHandle.bind(this)}/>
-                        <Price priceHandle={this.priceHandle.bind(this)}/>
-                        <OtherMsg otherMsgHandle={this.otherMsgHandle.bind(this)}/>
+                        <Population populationHandle={this.populationHandle.bind(this)} name={name} level={level} object={object}/>
+                        <Cpu cpuHandle={this.cpuHandle.bind(this)} epu={epu} problemMax={problemMax} pageType={pageType}/>
+                        <ErrorSource errorSourceHandle={this.errorSourceHandle.bind(this)} problemSource={problemSource}/>
+                        <Service serviceHandle={this.serviceHandle.bind(this)} 
+                                 serviceType={serviceType} 
+                                 serviceLauncher={serviceLauncher} 
+                                 serviceStartTime={serviceStartTime} 
+                                 serviceEndTime={serviceEndTime}/>
+                        <DocDelivery deliverHandle={this.deliverHandle.bind(this)}
+                                     deliverType={deliverType}
+                                     deliverPriority={deliverPriority}
+                                     deliverTime={deliverTime}
+                                     deliverExpected={deliverExpected}/>
+                        <Price priceHandle={this.priceHandle.bind(this)} price={price}/>
+                        <OtherMsg otherMsgHandle={this.otherMsgHandle.bind(this)}
+                                  subject={subject}
+                                  grade={grade}/>
                         <AddService/>
-                        <Detail msg={msg} submitHandle={this.submitHandle.bind(this)}/>
+                        <Detail msg={detailMsg} submitHandle={this.submitHandle.bind(this)}/>
                     </Col>
                     {/* <Col span={1}></Col> */}
                 </Row>

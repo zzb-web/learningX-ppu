@@ -1,10 +1,20 @@
 import React from 'react';
 import PopulationComponent from '../../components/FirstProductDesign/population.js';
 class Population extends React.Component{
-    state={
-        name: '', 
-        level: '无', 
-        object: '高端试点',
+    constructor(props){
+        super();
+        this.state={
+            name: props.name, 
+            level: props.level, 
+            object: props.object,
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            name : nextProps.name,
+            level : nextProps.level,
+            object : nextProps.object
+        })
     }
     productInput(e){
         this.setState({
@@ -32,7 +42,8 @@ class Population extends React.Component{
             <div>
                 <PopulationComponent productInput={this.productInput.bind(this)}
                                      productLevel={this.productLevel.bind(this)}
-                                     productObj={this.productObj.bind(this)}/>
+                                     productObj={this.productObj.bind(this)}
+                                     data={this.state}/>
             </div>
         )
     }

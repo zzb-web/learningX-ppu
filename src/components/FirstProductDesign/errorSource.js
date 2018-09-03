@@ -5,6 +5,39 @@ class ErrorSource extends React.Component{
     state={
         selectStatus : [false,false,false]
     }
+    componentWillMount(){
+        const {selectStatus} = this.state;
+        const {problemSource} = this.props.data;
+        if(problemSource.indexOf('课本') !==-1){
+            selectStatus[0] = true
+        }
+        if(problemSource.indexOf('普通教辅书') !==-1){
+            selectStatus[1] = true
+        }
+        if(problemSource.indexOf('平时试卷') !==-1){
+            selectStatus[2] = true
+        }
+        this.setState({
+            selectStatus : selectStatus
+        })
+    }
+    componentWillReceiveProps(nextProps){
+        const {selectStatus} = this.state;
+        const {problemSource} = nextProps.data;
+        if(problemSource.indexOf('课本') !==-1){
+            selectStatus[0] = true
+        }
+        if(problemSource.indexOf('普通教辅书') !==-1){
+            selectStatus[1] = true
+        }
+        if(problemSource.indexOf('平时试卷') !==-1){
+            selectStatus[2] = true
+        }
+        this.setState({
+            selectStatus : selectStatus
+        })
+    }
+
     errMark(index){
         let {selectStatus} = this.state;
         selectStatus[index] = !selectStatus[index]

@@ -1,9 +1,18 @@
 import React from 'react';
 import OtherMsgComponent from '../../components/FirstProductDesign/otherMsg.js';
 class OtherMsg extends React.Component{
-    state={
-        subject: '',
-        grade: '',
+    constructor(props){
+        super();
+        this.state={
+            subject : props.subject,
+            grade : props.grade
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            subject : nextProps.subject,
+            grade : nextProps.grade
+        })
     }
     subjectHandle(value){
         this.setState({
@@ -23,7 +32,8 @@ class OtherMsg extends React.Component{
         return(
             <div>
                 <OtherMsgComponent subjectHandle={this.subjectHandle.bind(this)}
-                                   gradeHandle={this.gradeHandle.bind(this)}/>
+                                   gradeHandle={this.gradeHandle.bind(this)}
+                                   data={this.state}/>
             </div>
         )
     }

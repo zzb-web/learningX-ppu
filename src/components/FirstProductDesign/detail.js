@@ -4,8 +4,8 @@ const {Option} = Select;
 class Detail extends React.Component{
     render(){
         return(
-            <div style={{width:'100%',height:100,marginTop:20}}>
-                <div className='title-3'>详情:</div>
+            <div style={{width:'100%',height:200,marginTop:20}}>
+                <div className='title-detail'>详情:</div>
                 <div className='title-detail-content'>
                     <div>{this.props.msg}</div>
                     <Button type='primary' 

@@ -1,10 +1,20 @@
 import React from 'react';
 import CpuComponent from '../../components/FirstProductDesign/cpuhandle.js';
 class Cpu extends React.Component{
-    state={
-        epu: 1,
-        problemMax: 1,
-        pageType: 'A4'
+    constructor(props){
+        super();
+        this.state={
+            epu: props.epu,
+            problemMax: props.problemMax,
+            pageType: props.pageType
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            epu: nextProps.epu,
+            problemMax: nextProps.problemMax,
+            pageType: nextProps.pageType
+        })
     }
     epuHandle(value){
         let epu;
@@ -32,7 +42,8 @@ class Cpu extends React.Component{
             <div>
                 <CpuComponent epuHandle={this.epuHandle.bind(this)}
                               topicHandle={this.topicHandle.bind(this)}
-                              paperHandle={this.paperHandle.bind(this)}/>
+                              paperHandle={this.paperHandle.bind(this)}
+                              data={this.state}/>
             </div>
         )
     }

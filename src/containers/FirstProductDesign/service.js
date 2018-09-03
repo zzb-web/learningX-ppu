@@ -1,13 +1,24 @@
 import React from 'react';
 import ServiceComponent from '../../components/FirstProductDesign/service.js';
 class Service extends React.Component{
-    state={
-        serviceType: '', 
-        serviceLauncher: '',
-        serviceStartTime: 0,  
-        serviceEndTime: 0, 
-        serviceTimes: 0,  
-        serviceDuration: '',
+    constructor(props){
+        super();
+        this.state={
+            serviceType: props.serviceType, 
+            serviceLauncher: props.serviceLauncher,
+            serviceStartTime: props.serviceStartTime,  
+            serviceEndTime: props.serviceEndTime, 
+            serviceTimes: 0,  
+            serviceDuration: '',
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            serviceType: nextProps.serviceType, 
+            serviceLauncher: nextProps.serviceLauncher,
+            serviceStartTime: nextProps.serviceStartTime,  
+            serviceEndTime: nextProps.serviceEndTime, 
+        })
     }
     serviceType(value){
         this.setState({
@@ -54,6 +65,7 @@ class Service extends React.Component{
                                   serviceTimeChange={this.serviceTimeChange.bind(this)}
                                   serviceTimeOk={this.serviceTimeOk.bind(this)}
                                 //   serviceTimes={this.serviceTimes.bind(this)}
+                                  data={this.state}
                                   />
             </div>
         )
