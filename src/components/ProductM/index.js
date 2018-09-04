@@ -175,10 +175,10 @@ class ProductM extends React.Component{
                             </div>,
                 operation :  <Select style={{width:'90%'}} 
                                      placeholder={<span style={{color:'rgb(0, 153, 255)'}}>操作</span>}
-                                     onChange={this.operaHandle.bind(this,item.productID)}>
+                                     onChange={this.operaHandle.bind(this,[item.productID,item.status])}>
                                     <Option value={1}>产品修改</Option>
                                     <Option value={2}>叠加新品</Option>
-                                    <Option value={3}>运行/停止</Option>
+                                    <Option value={3}>{item.status ? '停止' :'运行'}</Option>
                                 </Select>
             })
         })

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col,Row,TreeSelect} from 'antd';
+import {Col,Row,message,Modal} from 'antd';
 import Mark from './mark.js';
 import Population from './population.js';
 import Cpu from './cpuhandle.js';
@@ -10,10 +10,12 @@ import Price from './price.js';
 import OtherMsg from './otherMsg.js';
 import AddService from './addService.js';
 import Detail from './detail.js';
-import {Post,Get} from '../../fetch/data.js';
+import {Post,Get,Put} from '../../fetch/data.js';
 import moment from 'moment';
+const {confirm} = Modal;
 class FirstProductDesign extends React.Component{
     state = {
+        showModal : false,
         problemCode:'E',
         gradation:1,
         depth:1,
@@ -124,9 +126,12 @@ class FirstProductDesign extends React.Component{
         return Y+M+D+h+m+s;
     }
     submitHandle(){
+        this.showConfirm()
+    }
+    submitOK(){
         let {problemCode,gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
             serviceStartTime,serviceEndTime,deliverType,deliverPriority,deliverTime,
-            deliverExpected,price,subject,grade} = this.state
+            deliverExpected,price,subject,grade,way} = this.state
             var newdeliverTime = [];
             deliverTime.map((item,index)=>{
                 if(item !== ''&& item.day !==''&& item.time !==''){
@@ -168,20 +173,52 @@ class FirstProductDesign extends React.Component{
             subject: subject,
             grade: grade
         }
-        console.log(postMsg)
-        Post('/api/v3/staffs/products/',postMsg).then(resp=>{
-            
-        })
+        if(way === 1){
+            const {productID} = this.state;
+            Put(`/api/v3/staffs/products/${productID}/`,postMsg).then(resp=>{
+                if(resp.status === 200){
+                    message.success('操作成功');
+                }else{
+                    message.error('操作失败');
+                }
+            })
+        }else{
+            Post('/api/v3/staffs/products/',postMsg).then(resp=>{
+                if(resp.status === 200){
+                    message.success('操作成功');
+                }else{
+                    message.error('操作失败');
+                }
+            })
+        }
+        
     }
+    showConfirm() {
+        const that = this;
+        confirm({
+          title: '必须进行产品设计检查',
+          content: '你确定产品设计OK?',
+          onOk() {
+            that.submitOK()
+          },
+          onCancel() {
+            
+          },
+        });
+      }
     componentWillMount(){
         const height = document.documentElement.clientHeight;
-        this.setState({
-            height : height
-        })
         const way = this.props.msg.way;
-        console.log('99999999999999999',way)
-        if(way === 1){
+        this.setState({
+            height : height,
+            way : way
+        })
+        if(way === 1 || way === 2){
             let productID = this.props.msg.productID;
+            console.log(productID)
+            this.setState({
+                productID : productID
+            })
             Get(`/api/v3/staffs/products/${productID}/`).then(resp=>{
                 if(resp.status === 200){
                     let e = resp.data;

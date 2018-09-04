@@ -1,7 +1,7 @@
 import React from 'react';
 import {Col,Row,TreeSelect} from 'antd';
 import ProductMComponent from '../../components/ProductM/index.js';
-import {Get} from '../../fetch/data.js';
+import {Get,Put} from '../../fetch/data.js';
 class ProductM extends React.Component{
     state = {
         value: ['0-0-0'],
@@ -13,7 +13,6 @@ class ProductM extends React.Component{
       }
       queryHandle(){
           const {value} = this.state;
-          console.log(value)
           let epu1=false,epu2=false,epu3=false,upscale=false,normal=false,business=false;
           if(value.indexOf('0-0')!==-1){
             epu1=true;
@@ -53,13 +52,21 @@ class ProductM extends React.Component{
               }
           })
       }
-      operaHandle(productID,value){
+      operaHandle(data,value){
+        const productID = data[0]
         if(value === 1){
           this.props.setKey('2',1,productID)
         }else if(value === 2){
           this.props.setKey('2',2,productID)
         }else{
-          alert('xxxxx')
+          let msg = {
+            status : !data[1]
+          }
+          Put(`/api/v3/staffs/products/${productID}/status/`,msg).then(resp=>{
+            if(resp.status === 200){
+              this.queryHandle()
+            }
+          })
         }
       }
     render(){
