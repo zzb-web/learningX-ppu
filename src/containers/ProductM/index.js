@@ -6,7 +6,8 @@ class ProductM extends React.Component{
     state = {
         value: ['0-0-0'],
         productData : [],
-        showTable : false
+        showTable : false,
+        operaValue : ''
       }
       onChange = (value) => {
         this.setState({ value });
@@ -65,12 +66,15 @@ class ProductM extends React.Component{
           Put(`/api/v3/staffs/products/${productID}/status/`,msg).then(resp=>{
             if(resp.status === 200){
               this.queryHandle()
+              this.setState({
+                operaValue : ''
+              })
             }
           })
         }
       }
     render(){
-      const {productData,value,showTable} = this.state;
+      const {productData,value,showTable,operaValue} = this.state;
         return(
             <div>
                 <Row>
@@ -81,6 +85,7 @@ class ProductM extends React.Component{
                             queryHandle={this.queryHandle.bind(this)}
                             operaHandle={this.operaHandle.bind(this)}
                             value={value}
+                            operaValue={operaValue}
                             productData={productData}
                             showTable={showTable}/>
                     </Col>

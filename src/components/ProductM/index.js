@@ -139,7 +139,7 @@ class ProductM extends React.Component{
             }
         ]
         const dataSource = []
-        const {productData,showTable} = this.props;
+        const {productData,showTable,operaValue} = this.props;
         productData.map((item,index)=>{
             dataSource.push({
                 key : item.productID,
@@ -174,6 +174,7 @@ class ProductM extends React.Component{
                                 <div>{item.grade}年级</div>
                             </div>,
                 operation :  <Select style={{width:'90%'}} 
+                                     value={operaValue}
                                      placeholder={<span style={{color:'rgb(0, 153, 255)'}}>操作</span>}
                                      onChange={this.operaHandle.bind(this,[item.productID,item.status])}>
                                     <Option value={1}>产品修改</Option>

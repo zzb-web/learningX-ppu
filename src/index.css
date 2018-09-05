@@ -195,3 +195,53 @@ body {
   text-align: center;
   padding-top: 50px;
 }
+
+.person-box{
+  width: 100%;
+  height: 50%;
+}
+.person-box:first-child{
+  border-bottom: 1px solid #dadada;
+}
+.person-title{
+  width: 40px;
+  height: 200px;
+  text-align: center;
+  font-size: 24px;
+  background-color: #666;
+  color: #fff;
+  font-weight: 500;
+  padding-top: 20px;
+  float: left;
+}
+.person-content{
+  height: 200px;
+  width: 90%;
+  float: left;
+}
+.person-select{
+  height: 150px;
+  width: 44%;
+  border: 1px solid #dadada;
+  margin-top: 25px;
+  margin-left: 30px;
+  padding: 20px 0 0 20px;
+  float: left;
+}
+.person-detail{
+  height: 150px;
+  width: 44%;
+  border: 1px solid #dadada;
+  margin-top: 25px;
+  margin-left: 30px;
+  float: left;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+.person-msg{
+  float: left;
+  margin-left: 20px;
+  width:80%;
+  height: 95%;
+  overflow: auto;
+}
