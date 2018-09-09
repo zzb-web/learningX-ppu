@@ -17,8 +17,8 @@ const { Header, Sider, Content} = Layout;
 const {SubMenu} = Menu;
 class Navigation extends Component {
   state = {
-    collapsed: false,
-    key: '3',
+    collapsed: true,
+    key: '1',
     subKey : ['sub1'],
     showUser : 'none',
     contentHeight :　0,
@@ -153,9 +153,9 @@ class Navigation extends Component {
                   <span>第一代产品设计</span>
                 </Menu.Item>
               </SubMenu>
-              <SubMenu key="sub2" title={<span><Icon type="book"/><span>个人产品配置</span></span>}>
+              <SubMenu key="sub2" title={<span><Icon type="book"/><span>产品配置</span></span>}>
                 <Menu.Item key="3">
-                    <span>个人信息确认</span>
+                    <span>个人产品配置</span> 
                 </Menu.Item>
               </SubMenu>
               <SubMenu key="sub3" title={<span><Icon type="user"/><span>用户信息</span></span>}>

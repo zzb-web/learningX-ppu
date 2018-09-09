@@ -194,8 +194,13 @@ body {
 .msg-detail{
   text-align: center;
   padding-top: 50px;
+  font-size: 20px;
 }
-
+.msg-detail>div{
+  text-align: left;
+  width: 20%;
+  margin-left:40%;
+}
 .person-box{
   width: 100%;
   height: 50%;

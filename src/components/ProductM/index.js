@@ -1,5 +1,5 @@
 import React from 'react';
-import {TreeSelect,Button,Table, Select} from 'antd';
+import {TreeSelect,Button,Table, Select, Menu, Dropdown,Icon} from 'antd';
 const {Option} = Select;
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 const EPUs = ['EPU1','EPU2']
@@ -15,8 +15,8 @@ class ProductM extends React.Component{
         var s = date.getSeconds();
         return Y+M+D+h+m+s;
     }
-    operaHandle(productID,value){
-        this.props.operaHandle(productID,value)
+    operationHandle(data,value){
+        this.props.operaHandle(data,value.key)
     }
     render(){
         const treeData = [
@@ -81,7 +81,7 @@ class ProductM extends React.Component{
                 title: '产品编号/设计日期',
                 dataIndex: 'productNum',
                 key: 'productNum',
-                width:'10%'
+                width:'13%'
             },
             {
                 title: '服务状态',
@@ -99,7 +99,7 @@ class ProductM extends React.Component{
                 title: '处理器',
                 dataIndex: 'cpu',
                 key: 'cpu',
-                width:'15%'
+                width:'12%'
             },
             {
                 title: '错题源',
@@ -141,6 +141,13 @@ class ProductM extends React.Component{
         const dataSource = []
         const {productData,showTable,operaValue} = this.props;
         productData.map((item,index)=>{
+            let menu = (
+                <Menu onClick={this.operationHandle.bind(this,[item.productID,item.status])}>
+                  <Menu.Item key={1}>产品修改</Menu.Item>
+                  <Menu.Item key={2}>叠加新品</Menu.Item>
+                  <Menu.Item key={3}>{item.status ? '停止' :'运行'}</Menu.Item>
+                </Menu>
+              );
             dataSource.push({
                 key : item.productID,
                 productNum : <div>
@@ -153,7 +160,11 @@ class ProductM extends React.Component{
                                 <div>{item.level}</div>
                                 <div>{item.object}</div>
                             </div>,
-                cpu : `${EPUs[item.epu]} / ${item.problemMax} / ${item.pageType}`,
+                cpu : <div>
+                          <div>EPU : {EPUs[item.epu-1]}</div>
+                          <div>题量 : {item.problemMax}</div>
+                          <div>纸张 : {item.pageType}</div>
+                      </div>,
                 errorSource: <div>
                                 <div>{item.problemSource[0]}</div>
                                 <div>{item.problemSource[1]}</div>
@@ -173,14 +184,11 @@ class ProductM extends React.Component{
                                 <div>{item.subject}</div>
                                 <div>{item.grade}年级</div>
                             </div>,
-                operation :  <Select style={{width:'90%'}} 
-                                     value={operaValue}
-                                     placeholder={<span style={{color:'rgb(0, 153, 255)'}}>操作</span>}
-                                     onChange={this.operaHandle.bind(this,[item.productID,item.status])}>
-                                    <Option value={1}>产品修改</Option>
-                                    <Option value={2}>叠加新品</Option>
-                                    <Option value={3}>{item.status ? '停止' :'运行'}</Option>
-                                </Select>
+                operation :  <Dropdown overlay={menu}>
+                                <a style={{color:'rgb(0, 153, 255)'}}>
+                                操作 <Icon type="down" />
+                                </a>
+                            </Dropdown>
             })
         })
         return(

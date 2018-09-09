@@ -82,6 +82,11 @@ class PersonalInfoSure extends React.Component{
     }
     makeSure(){
         const {learnID} = this.state;
+        this.setState({
+            msg : [],
+            showDetail : false,
+            showSecond: false
+        })
         Get(`/api/v3/staffs/students/${learnID}/`).then(resp=>{
            if(resp.status === 200){
             this.setState({

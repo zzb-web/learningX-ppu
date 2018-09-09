@@ -55,9 +55,9 @@ class ProductM extends React.Component{
       }
       operaHandle(data,value){
         const productID = data[0]
-        if(value === 1){
+        if(value === '1'){
           this.props.setKey('2',1,productID)
-        }else if(value === 2){
+        }else if(value === '2'){
           this.props.setKey('2',2,productID)
         }else{
           let msg = {

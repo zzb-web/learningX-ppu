@@ -236,7 +236,7 @@ class PersonalInfoSure extends React.Component{
                                           onClick={this.props.toConfigure}>去配置</span>
                                 </div>
                                 <div className='msg-detail'>
-                                    <div>{data.msg.school}学校</div>
+                                    <div>{data.msg.school}</div>
                                     <div>{data.msg.grade}年级</div>
                                     <div>{data.msg.class}班</div>
                                 </div>
