@@ -43,6 +43,9 @@ class ProductM extends React.Component{
           if(value.indexOf('0-1-2') !==-1){
             business = true
           }
+          if(value.indexOf('0-1-3') !==-1){
+            // business = true
+          }
           let msg = `epu1=${epu1}&epu2=${epu2}&epu3=${epu3}&upscale=${upscale}&normal=${normal}&business=${business}`;
           Get(`/api/v3/staffs/products/?${msg}`).then(resp=>{
               if(resp.status=== 200){

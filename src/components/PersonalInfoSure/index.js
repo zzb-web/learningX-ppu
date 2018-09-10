@@ -80,7 +80,7 @@ class PersonalInfoSure extends React.Component{
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
-        return Y+M+D+h+m+s;
+        return Y+M+D;
     }
     componentWillMount(){
         this.setState({
@@ -108,6 +108,7 @@ class PersonalInfoSure extends React.Component{
             price_1 : this.props.data.productData_1.price,
             subject_1: this.props.data.productData_1.subject, 
             grade_1: this.props.data.productData_1.grade,
+            status_1 : this.props.data.productData_1.status,
 
             curProductID :this.props.data.curProductID,
             problemCode: this.props.data.productData.problemCode,
@@ -133,9 +134,14 @@ class PersonalInfoSure extends React.Component{
             price : this.props.data.productData.price,
             subject: this.props.data.productData.subject, 
             grade: this.props.data.productData.grade,
+            status : this.props.data.productData.status,
+
+            showNew : this.props.data.showNew,
+            showCur : this.props.data.showCur
         })
     }
     componentWillReceiveProps(nextProps){
+        console.log('oooooo',nextProps.data.productData.deliverTime)
         this.setState({
             allProductId : nextProps.data.allProductId,
             problemCode_1: nextProps.data.productData_1.problemCode,
@@ -161,6 +167,7 @@ class PersonalInfoSure extends React.Component{
             price_1 : nextProps.data.productData_1.price,
             subject_1: nextProps.data.productData_1.subject, 
             grade_1: nextProps.data.productData_1.grade,
+            status_1 : nextProps.data.productData_1.status,
 
             curProductID : nextProps.data.curProductID,
             problemCode: nextProps.data.productData.problemCode,
@@ -186,21 +193,26 @@ class PersonalInfoSure extends React.Component{
             price : nextProps.data.productData.price,
             subject: nextProps.data.productData.subject, 
             grade: nextProps.data.productData.grade,
+            status : nextProps.data.productData.status,
+
+            showNew : nextProps.data.showNew,
+            showCur : nextProps.data.showCur
         })
     }
     render(){
         const {problemCode,gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
             serviceStartTime,serviceEndTime,deliverType,deliverPriority,deliverTime,
-            deliverExpected,price,subject,grade,allProductId,curProductID} = this.state
+            deliverExpected,price,subject,grade,allProductId,curProductID,status,showNew,showCur} = this.state
             const {problemCode_1,gradation_1,depth_1,name_1,level_1,object_1,epu_1,problemMax_1,pageType_1,problemSource_1 ,serviceType_1,serviceLauncher_1,
                 serviceStartTime_1,serviceEndTime_1,deliverType_1,deliverPriority_1,deliverTime_1,
-                deliverExpected_1,price_1,subject_1,grade_1} = this.state
+                deliverExpected_1,price_1,subject_1,grade_1,status_1} = this.state
                 console.log(curProductID)
             const EPUs = ['EPU1','EPU2']
             const gradations = ['第1层 题目','第2层 过程','第3层 引导'];
             const depths = ['第1代 错题','第2代 类型','第3代 考试'];
             const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
             let deliverTimeMsg = '';
+            console.log('?????',deliverTime)
         deliverTime.map((item,index)=>{
             deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
         })
@@ -243,9 +255,12 @@ class PersonalInfoSure extends React.Component{
                             </div> : null
                             }
                             {
+                                data.showNoUser ? <div className='msg-content no-user'>没有此用户</div> : null
+                            }
+                            {
                                 data.showSecond ? <div style={{width:'100%',height:400,marginTop:30}}>
                                     <div className='person-box'>
-                                        <div className='person-title'>在线产品</div>
+                                        <div className='person-title'>在用产品</div>
                                         <div className='person-content'>
                                             <div className='person-select'>
                                                 <span>产品编号:</span>
@@ -255,8 +270,9 @@ class PersonalInfoSure extends React.Component{
                                             </div>
                                             <div className='person-detail'>
                                                 <div style={{float:'left'}}>产品详情</div>
+                                                {showCur ? 
                                                 <div className='person-msg'>
-                                                    <div>服务状态</div>
+                                                    <div>服务状态:{status?<span style={{color:'#48D61D'}}>运行</span>:<span style={{color:'#FF3547'}}>停止</span>}</div>
                                                     <div><span>问题:错题学习</span></div>
                                                     <div>{`层次:${gradations[gradation-1]}`}</div>
                                                     <div>{`深度:${depths[depth-1]}`}</div>
@@ -269,7 +285,7 @@ class PersonalInfoSure extends React.Component{
                                 交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}/交付预期:${deliverExpected}小时以内`}</div>
                                                     <div>{`价格:${price}元`}</div>
                                                     <div>{`其他信息:学科:${subject}/年级:${grade}`}</div>
-                                                </div>
+                                                </div> : <div className='person-msg'></div>}
                                             </div>
                                         </div>
                                     </div>
@@ -279,6 +295,7 @@ class PersonalInfoSure extends React.Component{
                                         <div className='person-select'>
                                             <span>产品编号:</span>
                                             <Select style={{width:160,marginLeft:20}}
+                                                    combobox
                                                     onChange={this.props.configureChange}>
                                                 {
                                                     allProductId.map((item,index)=>
@@ -289,8 +306,9 @@ class PersonalInfoSure extends React.Component{
                                             </div>
                                             <div className='person-detail'>
                                                 <div style={{float:'left'}}>产品详情</div>
+                                                { showNew ? 
                                                 <div className='person-msg'>
-                                                    <div>服务状态</div>
+                                                    <div>服务状态:{status_1?<span style={{color:'#48D61D'}}>运行</span>:<span style={{color:'#FF3547'}}>停止</span>}</div>
                                                     <div><span>问题:错题学习</span></div>
                                                     <div>{`层次:${gradations[gradation_1-1]}`}</div>
                                                     <div>{`深度:${depths[depth_1-1]}`}</div>
@@ -303,7 +321,8 @@ class PersonalInfoSure extends React.Component{
                                 交付优先:第${deliverPriority_1}/交付节点:${deliverTimeMsg_1}/交付预期:${deliverExpected_1}小时以内`}</div>
                                                     <div>{`价格:${price_1}元`}</div>
                                                     <div>{`其他信息:学科:${subject_1}/年级:${grade_1}`}</div>
-                                                </div>
+                                                </div> : <div className='person-msg'></div>
+                                            }
                                                 <Button type='primary'
                                                         style={{width:120,marginTop:20,float:'right'}}
                                                         onClick={this.props.submitHandle}

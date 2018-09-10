@@ -20,7 +20,7 @@ class Population extends React.Component{
     render(){
         const {name,level,object} = this.state;
         console.log(name)
-        const productLevel = ['无','入门型','进阶型','高阶型']
+        const productLevel = ['入门型','进阶型','高阶型']
         const productObj = ['高端试点','普通试点','共享应用','商业应用']
         return(
             <div style={{width:'100%',height:100,marginTop:20}}>

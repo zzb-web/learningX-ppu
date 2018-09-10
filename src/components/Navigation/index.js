@@ -180,7 +180,7 @@ class Navigation extends Component {
             </div>
           </div>
           </Header>
-          <Content style={{ margin: '16px 16px', padding: 24, background: '#fff', minHeight:this.state.contentHeight,/*marginTop:80 */ }}>
+          <Content style={key==='2'?{ margin: '16px 16px',minHeight:this.state.contentHeight+32}:{ margin: '16px 16px', padding: 24, background: '#fff',minHeight:this.state.contentHeight}}>
             {
                  this.state.key === '1' ? <ProductMLoadable setKey={this.setKey.bind(this)}/> : null
             } 

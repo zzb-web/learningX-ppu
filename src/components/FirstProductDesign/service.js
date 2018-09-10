@@ -27,7 +27,7 @@ class Service extends React.Component{
         const {serviceType,serviceLauncher,serviceStartTime,serviceEndTime} = this.state;
         let serviceStartTime_1 =moment.unix(serviceStartTime).format('YYYY-MM-DD HH:mm');
         let serviceEndTime_1 =moment.unix(serviceEndTime).format('YYYY-MM-DD HH:mm');
-        const serviceTypes = ['自动','简约','全包'];
+        const serviceTypes = ['自助','简约','全包'];
         const serviceStart = ['用户','系统']
         return(
             <div style={{width:'100%',height:150,marginTop:20}}>
@@ -58,9 +58,9 @@ class Service extends React.Component{
                     <span style={{marginLeft:10}}>服务时段:</span>
                     <RangePicker
                         style={{marginLeft:10}}
-                        showTime={{ format: 'HH:mm' }}
-                        format="YYYY-MM-DD HH:mm"
-                        value={[moment(serviceStartTime_1,'YYYY-MM-DD HH:mm'),moment(serviceEndTime_1,'YYYY-MM-DD HH:mm')]}
+                        // showTime={{ format: 'HH:mm' }}
+                        format="YYYY-MM-DD"
+                        value={[moment(serviceStartTime_1,'YYYY-MM-DD'),moment(serviceEndTime_1,'YYYY-MM-DD')]}
                         placeholder={['Start Time', 'End Time']}
                         onChange={this.props.serviceTimeChange}
                         onOk={this.props.serviceTimeOk}

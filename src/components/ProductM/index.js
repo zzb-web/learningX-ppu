@@ -13,7 +13,7 @@ class ProductM extends React.Component{
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
-        return Y+M+D+h+m+s;
+        return Y+M+D;
     }
     operationHandle(data,value){
         this.props.operaHandle(data,value.key)
@@ -61,6 +61,11 @@ class ProductM extends React.Component{
                         label: '商业应用',
                         value: '0-1-2',
                         key: '0-1-2',
+                    },
+                    {
+                        label: '共享应用',
+                        value: '0-1-3',
+                        key: '0-1-3',
                     }
                 ],
             }

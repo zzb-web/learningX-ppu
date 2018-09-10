@@ -8,6 +8,7 @@ class PersonalInfoSure extends React.Component{
     state={
         learnID : '',
         msg : '',
+        showNoUser : false,
         showDetail : false,
         showSecond : false,
         allProductId : [],
@@ -78,21 +79,38 @@ class PersonalInfoSure extends React.Component{
             grade: '',
         },
         curProductID : '',
-        productID_selected : ''
+        productID_selected : '',
+        showCur : false,
+        showNew : false,
     }
     makeSure(){
         const {learnID} = this.state;
-        this.setState({
-            msg : [],
-            showDetail : false,
-            showSecond: false
-        })
+      
         Get(`/api/v3/staffs/students/${learnID}/`).then(resp=>{
            if(resp.status === 200){
+               let msg = resp.data;
+            if(msg.name === '' || msg.school === ''){
+                this.setState({
+                    msg : [],
+                    showDetail : false,
+                    showSecond: false,
+                    showNoUser : true
+                })
+            }else{
+                this.setState({
+                    msg : resp.data,
+                    showDetail : true,
+                    showSecond: false,
+                    showNoUser : false
+                })
+            }
+            
+           }else{
             this.setState({
-                msg : resp.data,
-                showDetail : true,
-                showSecond: false
+                msg : [],
+                showDetail : false,
+                showSecond: false,
+                showNoUser : true
             })
            }
         })
@@ -113,7 +131,9 @@ class PersonalInfoSure extends React.Component{
         Get(`/api/v3/staffs/products/?${msg}`).then(resp=>{
             if(resp.status=== 200){
                 resp.data.map((item,index)=>{
-                    allProductId.push(item.productID)
+                    if(item.status){
+                        allProductId.push(item.productID)
+                    }
                 })
                 this.setState({
                     allProductId : allProductId
@@ -125,8 +145,13 @@ class PersonalInfoSure extends React.Component{
         Get(`/api/v3/staffs/products/${curProductID}/`).then(resp=>{
             if(resp.status === 200){
                 let e = resp.data;
+                if(resp.data.length !== 0){
+                    this.setState({
+                        productData : resp.data,
+                        showCur : true
+                      })
+                }
                 this.setState({
-                    productData : resp.data,
                     curProductID : curProductID
                   })
             }   
@@ -139,9 +164,17 @@ class PersonalInfoSure extends React.Component{
         })
         Get(`/api/v3/staffs/products/${productID}/`).then(resp=>{
             if(resp.status === 200){
-                this.setState({
-                    productData_1 : resp.data
-                  })
+                if(resp.data.length !==0){
+                    this.setState({
+                        productData_1 : resp.data,
+                        showNew : true
+                      })
+                }else{
+                    this.setState({
+                        showNew : false
+                    })
+                }
+                
             }   
         })
     }
@@ -157,6 +190,10 @@ class PersonalInfoSure extends React.Component{
         }else{
             message.error('操作失败');
         }
+        this.setState({
+            showCur : false,
+            showNew : false
+        })
        })
     }
     submitHandle(){

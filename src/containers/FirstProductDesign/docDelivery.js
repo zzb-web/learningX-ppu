@@ -26,7 +26,7 @@ class DocDelivery extends React.Component{
         this.props.deliverHandle([value,deliverPriority,deliverTime,deliverExpected])
     }
     deliverPriority(value){
-        const deliverPriority = Number(value[1]);
+        const deliverPriority = Number(value.split('第')[1]);
         this.setState({
             deliverPriority : deliverPriority
         })

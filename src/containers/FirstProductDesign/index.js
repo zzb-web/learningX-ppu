@@ -123,7 +123,7 @@ class FirstProductDesign extends React.Component{
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
-        return Y+M+D+h+m+s;
+        return Y+M+D;
     }
     submitHandle(){
         this.showConfirm()
@@ -142,11 +142,13 @@ class FirstProductDesign extends React.Component{
             let deliverTime_1 = [];
             let deliverExpected_1 = 0;
             if(deliverType === '立即交付'){
-                deliverPriority_1 = deliverPriority;
+               
             }else if(deliverType === '节点交付'){
                 deliverTime_1 = newdeliverTime;
+                deliverPriority_1 = deliverPriority;
             }else{
                 deliverExpected_1 = deliverExpected;
+                deliverPriority_1 = deliverPriority;
             }
         let postMsg = {
             problemCode:problemCode,
