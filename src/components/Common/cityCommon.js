@@ -49,7 +49,7 @@ class CityCommon extends React.Component{
     }
     render(){
         const {cityWarning} = this.state;
-        console.log(cityWarning)
+        // console.log(cityWarning)
         return(
             <div>
                 <div>

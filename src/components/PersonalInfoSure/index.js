@@ -141,7 +141,7 @@ class PersonalInfoSure extends React.Component{
         })
     }
     componentWillReceiveProps(nextProps){
-        console.log('oooooo',nextProps.data.productData.deliverTime)
+        // console.log('oooooo',nextProps.data.productData.deliverTime)
         this.setState({
             allProductId : nextProps.data.allProductId,
             problemCode_1: nextProps.data.productData_1.problemCode,
@@ -206,20 +206,43 @@ class PersonalInfoSure extends React.Component{
             const {problemCode_1,gradation_1,depth_1,name_1,level_1,object_1,epu_1,problemMax_1,pageType_1,problemSource_1 ,serviceType_1,serviceLauncher_1,
                 serviceStartTime_1,serviceEndTime_1,deliverType_1,deliverPriority_1,deliverTime_1,
                 deliverExpected_1,price_1,subject_1,grade_1,status_1} = this.state
-                console.log(curProductID)
+                // console.log(curProductID)
             const EPUs = ['EPU1','EPU2']
             const gradations = ['第1层 题目','第2层 过程','第3层 引导'];
             const depths = ['第1代 错题','第2代 类型','第3代 考试'];
             const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
             let deliverTimeMsg = '';
-            console.log('?????',deliverTime)
         deliverTime.map((item,index)=>{
+            if(item.day !== '' && item.time !== ''){
             deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
+            }
         })
         let deliverTimeMsg_1 = '';
         deliverTime_1.map((item,index)=>{
+            if(item.day !== '' && item.time !== ''){
             deliverTimeMsg_1 =deliverTimeMsg_1 +`${weeks[item.day]}_${item.time} `;
+            }
         })
+
+        let deliverMsg = '';
+        if(deliverType === '立即交付'){
+            deliverMsg = `交付优先:第0`
+        }else if(deliverType === '节点交付'){
+            deliverMsg = `交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}`
+        }else{
+            deliverMsg = `交付优先:第${deliverPriority}/交付预期:${deliverExpected}小时以内`
+        }
+
+        let deliverMsg_1 = '';
+        if(deliverType_1 === '立即交付'){
+            deliverMsg_1 = `交付优先:第0`
+        }else if(deliverType_1 === '节点交付'){
+            deliverMsg_1 = `交付优先:第${deliverPriority_1}/交付节点:${deliverTimeMsg_1}`
+        }else{
+            deliverMsg_1 = `交付优先:第${deliverPriority_1}/交付预期:${deliverExpected_1}小时以内`
+        }
+        // console.log(deliverMsg_1)
+
         const {data} = this.props;
         return(
             <div>
@@ -281,8 +304,7 @@ class PersonalInfoSure extends React.Component{
                                                     <div>{`错题源:${problemSource}`}</div>
                                                     <div>{`服务:服务类型:${serviceType}/服务发起:${serviceLauncher}/
                                 服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}`}</div>
-                                                    <div>{`文档交付:交付类型:${deliverType}/
-                                交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}/交付预期:${deliverExpected}小时以内`}</div>
+                                                    <div>{`文档交付:交付类型:${deliverType}/${deliverMsg}`}</div>
                                                     <div>{`价格:${price}元`}</div>
                                                     <div>{`其他信息:学科:${subject}/年级:${grade}`}</div>
                                                 </div> : <div className='person-msg'></div>}
@@ -317,8 +339,7 @@ class PersonalInfoSure extends React.Component{
                                                     <div>{`错题源:${problemSource}`}</div>
                                                     <div>{`服务:服务类型:${serviceType_1}/服务发起:${serviceLauncher_1}/
                                 服务时段:${this.timestampToTime(serviceStartTime_1)}~${this.timestampToTime(serviceEndTime_1)}`}</div>
-                                                    <div>{`文档交付:交付类型:${deliverType_1}/
-                                交付优先:第${deliverPriority_1}/交付节点:${deliverTimeMsg_1}/交付预期:${deliverExpected_1}小时以内`}</div>
+                                                    <div>{`文档交付:交付类型:${deliverType_1}/${deliverMsg_1}`}</div>
                                                     <div>{`价格:${price_1}元`}</div>
                                                     <div>{`其他信息:学科:${subject_1}/年级:${grade_1}`}</div>
                                                 </div> : <div className='person-msg'></div>

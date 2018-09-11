@@ -20,7 +20,7 @@ class RegistrationForm extends Component {
                 var params = {
                     password : values.password
                 }
-                console.log(params);
+                // console.log(params);
                 var result = Put('/api/v3/staffs/me/password/',params)
                 result.then((response)=>{
                     if(response.status ===200){

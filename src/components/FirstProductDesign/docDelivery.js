@@ -98,7 +98,7 @@ class DeliverTime extends React.Component{
             }
         }
      componentWillMount(){
-         console.log(this.props.time)
+        //  console.log(this.props.time)
      }
       componentWillReceiveProps(nextProps){
         this.setState({
@@ -120,7 +120,7 @@ class DeliverTime extends React.Component{
         this.props.deliverTimeHandle([idx,e,date])
       }
       timeChange(time, timeString) {
-        console.log(timeString)
+        // console.log(timeString)
         this.setState({
             date : timeString
         })
@@ -145,7 +145,7 @@ class DeliverTime extends React.Component{
       }
     render(){
         const {visible,week,date} = this.state;
-        console.log('time',this.props.idx,date)
+        // console.log('time',this.props.idx,date)
         let showTime = '';
         if(weeks[week] !== undefined && date !== ''){
             showTime = `${weeks[week]} ${date}`

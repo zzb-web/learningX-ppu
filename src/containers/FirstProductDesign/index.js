@@ -217,7 +217,7 @@ class FirstProductDesign extends React.Component{
         })
         if(way === 1 || way === 2){
             let productID = this.props.msg.productID;
-            console.log(productID)
+            // console.log(productID)
             this.setState({
                 productID : productID
             })
@@ -267,13 +267,18 @@ class FirstProductDesign extends React.Component{
         const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
         let deliverTimeMsg = '';
         deliverTime.map((item,index)=>{
-            deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
+            if(item.day !== '' && item.time !== ''){
+                deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
+            }
         })
-        const msg = `问题:${'错题学习'}/层次:${gradations[gradation-1]}/深度:${depths[depth-1]}/产品名称:${name}/产品级别:${level}/产品对象:${object}/EPU:${EPUs[epu-1]}/题量控制:${problemMax}
-        /纸张大小:${pageType}/错题源:${problemSource}/服务类型:${serviceType}/服务发起:${serviceLauncher}/
-        服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}/交付类型:${deliverType}/
-        交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}/交付预期:${deliverExpected}小时以内/价格:${price}元/
-        学科:${subject}/年级:${grade}`;
+        let deliverMsg = '';
+        if(deliverType === '立即交付'){
+            deliverMsg = `交付优先:第0`
+        }else if(deliverType === '节点交付'){
+            deliverMsg = `交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}`
+        }else{
+            deliverMsg = `交付优先:第${deliverPriority}/交付预期:${deliverExpected}小时以内`
+        }
         const detailMsg = <div>
                             <div><span>问题:错题学习</span></div>
                             <div>{`层次:${gradations[gradation-1]}`}</div>
@@ -283,8 +288,7 @@ class FirstProductDesign extends React.Component{
                             <div>{`错题源:${problemSource}`}</div>
                             <div>{`服务:服务类型:${serviceType}/服务发起:${serviceLauncher}/
         服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}`}</div>
-                            <div>{`文档交付:交付类型:${deliverType}/
-        交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}/交付预期:${deliverExpected}小时以内`}</div>
+                            <div>{`文档交付:交付类型:${deliverType}/${deliverMsg}`}</div>
                             <div>{`价格:${price}元`}</div>
                             <div>{`其他信息:学科:${subject}/年级:${grade}`}</div>
                             

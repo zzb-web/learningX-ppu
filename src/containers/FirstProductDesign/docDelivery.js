@@ -39,7 +39,7 @@ class DocDelivery extends React.Component{
             day: value[1], 
             time:value[2]
         }
-        console.log(deliverTime);
+        // console.log(deliverTime);
         this.setState({
             deliverTime : deliverTime
         })
@@ -62,7 +62,7 @@ class DocDelivery extends React.Component{
     }
     render(){
         const {deliverType} = this.state;
-        console.log(this.state.deliverTime)
+        // console.log(this.state.deliverTime)
         return(
             <div>
                 <DocDeliveryComponent deliveryType={this.deliveryType.bind(this)}
