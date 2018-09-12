@@ -23,9 +23,9 @@ class FirstProductDesign extends React.Component{
         name: '',  // 产品名称
         level: '',  // 产品级别
         object: '',  // 产品对象
-        epu: 0,  // EPU, 1 2
+        epu: '',  // EPU, 1 2
         problemMax: '',  // 题量控制
-        pageType: 'A4',    // 纸张类型，"A3"或者"A4"、
+        pageType: '',    // 纸张类型，"A3"或者"A4"、
         problemSource : [],
         serviceType: '',  // 服务类型
         serviceLauncher: '',  // 服务发起
@@ -163,8 +163,8 @@ class FirstProductDesign extends React.Component{
             problemSource : problemSource,
             serviceType: serviceType,
             serviceLauncher: serviceLauncher, 
-            serviceStartTime: serviceStartTime,
-            serviceEndTime: serviceEndTime,
+            serviceStartTime: parseInt(serviceStartTime),
+            serviceEndTime: parseInt(serviceEndTime),
             // serviceTimes: serviceTimes,
             // serviceDuration: serviceDuration,
             deliverType: deliverType,
@@ -275,23 +275,38 @@ class FirstProductDesign extends React.Component{
         if(deliverType === '立即交付'){
             deliverMsg = `交付优先:第0`
         }else if(deliverType === '节点交付'){
-            deliverMsg = `交付优先:第${deliverPriority}/交付节点:${deliverTimeMsg}`
+            deliverMsg = <span>
+                            <span style={deliverPriority ===''?{color:'red'}:null}>交付优先</span>:{deliverPriority}|
+                            <span style={deliverTimeMsg ===''?{color:'red'}:null}>交付节点</span>:{deliverTimeMsg}
+                        </span>
         }else{
-            deliverMsg = `交付优先:第${deliverPriority}/交付预期:${deliverExpected}小时以内`
+            deliverMsg = <span>
+                            <span style={deliverPriority ===''?{color:'red'}:null}>交付优先</span>:{deliverPriority}|
+                            <span style={deliverExpected ===''?{color:'red'}:null}>交付预期</span>:{deliverExpected}小时以内
+                        </span>
         }
         const detailMsg = <div>
                             <div><span>问题:错题学习</span></div>
                             <div>{`层次:${gradations[gradation-1]}`}</div>
                             <div>{`深度:${depths[depth-1]}`}</div>
-                            <div>{`总体:产品名称:${name}/产品级别:${level}/产品对象:${object}`}</div>
-                            <div>{`处理器:EPU:${EPUs[epu-1]}/题量控制:${problemMax}/纸张大小:${pageType}`}</div>
-                            <div>{`错题源:${problemSource}`}</div>
-                            <div>{`服务:服务类型:${serviceType}/服务发起:${serviceLauncher}/
-        服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}`}</div>
-                            <div>{`文档交付:交付类型:${deliverType}/${deliverMsg}`}</div>
-                            <div>{`价格:${price}元`}</div>
-                            <div>{`其他信息:学科:${subject}/年级:${grade}`}</div>
-                            
+                            <div>总体:<span style={name===''?{color:'red'}:null}>产品名称</span>:{name}|
+                                      <span style={level===''?{color:'red'}:null}>产品级别</span>:{level}|
+                                      <span style={object===''?{color:'red'}:null}>产品对象</span>:{object}
+                            </div>
+                            <div>处理器:<span style={epu===''?{color:'red'}:null}>EPU</span>:{EPUs[epu-1]}|
+                                        <span style={problemMax===''?{color:'red'}:null}>题量控制</span>:{problemMax}|
+                                        <span style={pageType===''?{color:'red'}:null}>纸张大小</span>:{pageType}
+                            </div>
+                            <div>错题源:<span style={problemSource.length===0?{color:'red'}:null}>错题源</span>:{`${problemSource}`}</div>
+                            <div>服务:<span style={serviceType===''?{color:'red'}:null}>服务类型</span>:{serviceType}|
+                                      <span style={serviceLauncher===''?{color:'red'}:null}>服务发起</span>:{serviceLauncher}|
+                                      <span style={this.timestampToTime(serviceStartTime)==='' || this.timestampToTime(serviceEndTime) === '' ?{color:'red'}:null}>服务时段</span>:{this.timestampToTime(serviceStartTime)}~{this.timestampToTime(serviceEndTime)}
+                            </div>
+                            <div>文档交付:<span style={deliverType===''?{color:'red'}:null}>交付类型</span>:{deliverType}|{deliverMsg}</div> 
+                            <div><span style={price ==='' || parseInt(price,10) === 0?{color:'red'}:null}>价格</span>:{price}元</div>
+                            <div>其他信息:<span style={subject===''?{color:'red'}:null}>学科</span>:{subject}|
+                                         <span style={grade===''?{color:'red'}:null}>年级</span>:{grade}
+                            </div>     
                           </div>
         return(
             <div style={{backgroundColor:'#efefef',height:height-150,overflow:'auto'}}>
@@ -305,7 +320,10 @@ class FirstProductDesign extends React.Component{
                         <Mark title='问题' textArr={['错题学习']} markClick={this.markClick.bind(this)}/>
                         <Mark title='层次' textArr={gradations} gradation={gradation} markClick={this.markClick.bind(this)}/>
                         <Mark title='深度' textArr={depths} depth={depth} markClick={this.markClick.bind(this)}/>     
-                        <Population populationHandle={this.populationHandle.bind(this)} name={name} level={level} object={object}/>
+                        <Population populationHandle={this.populationHandle.bind(this)} 
+                                    name={name} 
+                                    level={level} 
+                                    object={object}/>
                         <Cpu cpuHandle={this.cpuHandle.bind(this)} epu={epu} problemMax={problemMax} pageType={pageType}/>
                         <ErrorSource errorSourceHandle={this.errorSourceHandle.bind(this)} problemSource={problemSource}/>
                         <Service serviceHandle={this.serviceHandle.bind(this)} 

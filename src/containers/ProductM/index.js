@@ -4,49 +4,29 @@ import ProductMComponent from '../../components/ProductM/index.js';
 import {Get,Put} from '../../fetch/data.js';
 class ProductM extends React.Component{
     state = {
-        value: ['0-0-0'],
         productData : [],
         showTable : false,
-        operaValue : ''
+        operaValue : '',
+        epuValue : '',
+        objectValue : ''
       }
-      onChange = (value) => {
-        this.setState({ value });
+      onEPUChange(value){
+        this.setState({
+          epuValue : value
+        })
+      }
+      onObjectChange(value){
+        if(value === '全部'){
+          value = 'all'
+        }
+        this.setState({
+          objectValue : value
+        })
       }
       queryHandle(){
-          const {value} = this.state;
-          let epu1=false,epu2=false,epu3=false,upscale=false,normal=false,business=false;
-          if(value.indexOf('0-0')!==-1){
-            epu1=true;
-            epu2=true;
-            epu3=true;
-          }
-          if(value.indexOf('0-1') !==-1){
-            upscale=true;
-            normal=true;
-            business=true;
-          }
-          if(value.indexOf('0-0-0') !==-1){
-            epu1=true;
-          }
-          if(value.indexOf('0-0-1') !==-1){
-            epu2=true;
-          }
-          if(value.indexOf('0-0-2') !==-1){
-            epu3=true;
-          }
-          if(value.indexOf('0-1-0') !==-1){
-            upscale = true
-          }
-          if(value.indexOf('0-1-1') !==-1){
-            normal = true
-          }
-          if(value.indexOf('0-1-2') !==-1){
-            business = true
-          }
-          if(value.indexOf('0-1-3') !==-1){
-            // business = true
-          }
-          let msg = `epu1=${epu1}&epu2=${epu2}&epu3=${epu3}&upscale=${upscale}&normal=${normal}&business=${business}`;
+          const {epuValue,objectValue} = this.state;
+          
+          let msg = `epu=${epuValue}&object=${objectValue}`;
           Get(`/api/v3/staffs/products/?${msg}`).then(resp=>{
               if(resp.status=== 200){
                 this.setState({
@@ -84,7 +64,8 @@ class ProductM extends React.Component{
                     <Col span={1}></Col>
                     <Col span={22}>
                         <ProductMComponent 
-                            onChange={this.onChange.bind(this)}
+                            onEPUChange={this.onEPUChange.bind(this)}
+                            onObjectChange={this.onObjectChange.bind(this)}
                             queryHandle={this.queryHandle.bind(this)}
                             operaHandle={this.operaHandle.bind(this)}
                             value={value}

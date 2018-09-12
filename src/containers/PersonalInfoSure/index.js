@@ -127,7 +127,7 @@ class PersonalInfoSure extends React.Component{
         })
         //获取所有的产品
         let allProductId = []
-        let msg = `epu1=true&epu2=true&epu3=true&upscale=true&normal=true&business=true`;
+        let msg = `epu=-1&object=all`;
         Get(`/api/v3/staffs/products/?${msg}`).then(resp=>{
             if(resp.status=== 200){
                 resp.data.map((item,index)=>{
