@@ -202,8 +202,8 @@ class PersonalInfoSure extends React.Component{
     showConfirm() {
         const that = this;
         confirm({
-          title: '必须进行产品设计检查',
-          content: '你确定产品设计OK?',
+          title: '必须进行产品配置检查',
+          content: '你确定产品配置OK?',
           onOk() {
             that.submitOK()
           },
