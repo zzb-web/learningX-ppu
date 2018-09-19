@@ -186,14 +186,14 @@ class PersonalInfoSure extends React.Component{
        Put(`/api/v3/staffs/students/${learnID}/productID/`,msg).then(resp=>{
         if(resp.status === 200){
             message.success('操作成功');
-            this.makeSure();
+            // this.makeSure();
         }else{
             message.error('操作失败');
         }
-        this.setState({
-            showCur : false,
-            showNew : false
-        })
+        // this.setState({
+        //     showCur : false,
+        //     showNew : false
+        // })
        })
     }
     submitHandle(){
