@@ -109,6 +109,7 @@ class PersonalInfoSure extends React.Component{
             subject_1: this.props.data.productData_1.subject, 
             grade_1: this.props.data.productData_1.grade,
             status_1 : this.props.data.productData_1.status,
+            productID_selected :  this.props.data.productID_selected,
 
             curProductID :this.props.data.curProductID,
             problemCode: this.props.data.productData.problemCode,
@@ -168,6 +169,7 @@ class PersonalInfoSure extends React.Component{
             subject_1: nextProps.data.productData_1.subject, 
             grade_1: nextProps.data.productData_1.grade,
             status_1 : nextProps.data.productData_1.status,
+            productID_selected : nextProps.data.productID_selected,
 
             curProductID : nextProps.data.curProductID,
             problemCode: nextProps.data.productData.problemCode,
@@ -205,7 +207,7 @@ class PersonalInfoSure extends React.Component{
             deliverExpected,price,subject,grade,allProductId,curProductID,status,showNew,showCur} = this.state
             const {problemCode_1,gradation_1,depth_1,name_1,level_1,object_1,epu_1,problemMax_1,pageType_1,problemSource_1 ,serviceType_1,serviceLauncher_1,
                 serviceStartTime_1,serviceEndTime_1,deliverType_1,deliverPriority_1,deliverTime_1,
-                deliverExpected_1,price_1,subject_1,grade_1,status_1} = this.state
+                deliverExpected_1,price_1,subject_1,grade_1,status_1,productID_selected} = this.state
                 // console.log(curProductID)
             const EPUs = ['EPU1','EPU2']
             const gradations = ['第1层 题目','第2层 过程','第3层 引导'];
@@ -318,6 +320,7 @@ class PersonalInfoSure extends React.Component{
                                             <span>产品编号:</span>
                                             <Select style={{width:160,marginLeft:20}}
                                                     combobox
+                                                    value={productID_selected}
                                                     onChange={this.props.configureChange}>
                                                 {
                                                     allProductId.map((item,index)=>

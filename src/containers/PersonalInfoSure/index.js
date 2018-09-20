@@ -186,14 +186,27 @@ class PersonalInfoSure extends React.Component{
        Put(`/api/v3/staffs/students/${learnID}/productID/`,msg).then(resp=>{
         if(resp.status === 200){
             message.success('操作成功');
-            // this.makeSure();
+
+            Get(`/api/v3/staffs/products/${productID_selected}/`).then(resp=>{
+                if(resp.status === 200){
+                    let e = resp.data;
+                    if(resp.data.length !== 0){
+                        this.setState({
+                            productData : resp.data,
+                            showCur : true
+                          })
+                    }
+                    this.setState({
+                        curProductID : productID_selected,
+                        productID_selected : '',
+                        showNew : false
+                      })
+                }   
+            })
+
         }else{
             message.error('操作失败');
         }
-        // this.setState({
-        //     showCur : false,
-        //     showNew : false
-        // })
        })
     }
     submitHandle(){
