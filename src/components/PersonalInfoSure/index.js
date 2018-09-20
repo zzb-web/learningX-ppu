@@ -339,7 +339,7 @@ class PersonalInfoSure extends React.Component{
                                                     <div>{`深度:${depths[depth_1-1]}`}</div>
                                                     <div>{`总体:产品名称:${name_1}/产品级别:${level_1}/产品对象:${object_1}`}</div>
                                                     <div>{`处理器:EPU:${EPUs[epu_1-1]}/题量控制:${problemMax_1}/纸张大小:${pageType_1}`}</div>
-                                                    <div>{`错题源:${problemSource}`}</div>
+                                                    <div>{`错题源:${problemSource_1}`}</div>
                                                     <div>{`服务:服务类型:${serviceType_1}/服务发起:${serviceLauncher_1}/
                                 服务时段:${this.timestampToTime(serviceStartTime_1)}~${this.timestampToTime(serviceEndTime_1)}`}</div>
                                                     <div>{`文档交付:交付类型:${deliverType_1}/${deliverMsg_1}`}</div>
