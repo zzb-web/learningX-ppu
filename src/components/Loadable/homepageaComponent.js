@@ -3,6 +3,7 @@ import Loadable from 'react-loadable';
 import PersonalInfoSure from '../../containers/PersonalInfoSure/index.js';
 import ProductM from '../../containers/ProductM/index.js'
 import FirstProductDesign from '../../containers/FirstProductDesign/index.js';
+// import LayeredConfig from '../../containers/LayeredConfig/index.js';
 function MyLoadingComponent({ error }) {
     if (error) {
       return <div>Error!</div>;
@@ -62,10 +63,20 @@ const PersonalInfoSureComponent = Loadable({
 }
 
 
+const LayeredConfigComponent = Loadable({
+  loader: () => import('../../containers/LayeredConfig/index.js'),
+  loading: MyLoadingComponent,
+});
+ class LayeredConfigLoadable extends React.Component {
+  render() {
+    return <LayeredConfigComponent/>;
+  }
+}
 
 export {
         PassWordFormLoadable,
         ProductMLoadable,
         FirstProductDesignLoadable,
         PersonalInfoSureLoadable,
+        LayeredConfigLoadable
       }

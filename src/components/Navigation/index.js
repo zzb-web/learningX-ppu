@@ -9,6 +9,7 @@ import {
            FirstProductDesignLoadable,
            PersonalInfoSureLoadable,
           //  PersonalInfoConfigureLoadable
+          LayeredConfigLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -157,6 +158,9 @@ class Navigation extends Component {
                 <Menu.Item key="3">
                     <span>个人产品配置</span> 
                 </Menu.Item>
+                <Menu.Item key="4">
+                    <span>分层产品配置</span> 
+                </Menu.Item>
               </SubMenu>
               <SubMenu key="sub3" title={<span><Icon type="user"/><span>用户信息</span></span>}>
                 <Menu.Item key="">
@@ -190,6 +194,9 @@ class Navigation extends Component {
             }
             {
               this.state.key === '3' ? <PersonalInfoSureLoadable/> : null
+            }
+            {
+              this.state.key === '4' ? <LayeredConfigLoadable/> : null
             }
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>
