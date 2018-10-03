@@ -205,7 +205,7 @@ class Step3 extends React.Component {
 
     render(){
         let children = [];
-        for(let i=0;i<=10;i++){
+        for(let i=1;i<=10;i++){
             children.push(
                 <Option value={i}>{i}</Option>
             )
