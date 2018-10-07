@@ -73,10 +73,21 @@ const LayeredConfigComponent = Loadable({
   }
 }
 
+const ClassConfigComponent = Loadable({
+  loader: () => import('../../containers/ClassConfig/index.js'),
+  loading: MyLoadingComponent,
+});
+ class ClassConfigLoadable extends React.Component {
+  render() {
+    return <ClassConfigComponent/>;
+  }
+}
+
 export {
         PassWordFormLoadable,
         ProductMLoadable,
         FirstProductDesignLoadable,
         PersonalInfoSureLoadable,
-        LayeredConfigLoadable
+        LayeredConfigLoadable,
+        ClassConfigLoadable
       }

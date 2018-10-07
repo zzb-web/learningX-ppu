@@ -9,7 +9,8 @@ import {
            FirstProductDesignLoadable,
            PersonalInfoSureLoadable,
           //  PersonalInfoConfigureLoadable
-          LayeredConfigLoadable
+          LayeredConfigLoadable,
+          ClassConfigLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -161,6 +162,9 @@ class Navigation extends Component {
                 <Menu.Item key="4">
                     <span>分层产品配置</span> 
                 </Menu.Item>
+                <Menu.Item key="5">
+                    <span>班级产品配置</span> 
+                </Menu.Item>
               </SubMenu>
               <SubMenu key="sub3" title={<span><Icon type="user"/><span>用户信息</span></span>}>
                 <Menu.Item key="">
@@ -198,6 +202,10 @@ class Navigation extends Component {
             {
               this.state.key === '4' ? <LayeredConfigLoadable/> : null
             }
+            {
+              this.state.key === '5' ? <ClassConfigLoadable/> : null
+            }
+            
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2016 Created by Ant UED

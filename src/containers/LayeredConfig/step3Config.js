@@ -87,12 +87,26 @@ export default class Step3 extends React.Component{
             showNew : false,
         }
     }
+    componentWillMount(){
+        const type = this.props.type;
+        this.setState({
+            type : type
+        })
+        if(type === 1){
+            this.toConfig();
+        }
+    }
     componentWillReceiveProps(nextProps){
+        const type = nextProps.type;
         this.setState({
             schoolID : nextProps.schoolID,
             grade : nextProps.grade,
-            msgClass : nextProps.msgClass
+            msgClass : nextProps.msgClass,
+            type : type
         })
+        if(type === 1){
+            this.toConfig();
+        }
     }
     selectLevel(value){
         console.log(value)
@@ -182,14 +196,24 @@ export default class Step3 extends React.Component{
     }
 
       submitOK(){
-        const {productID_selected,learnID,level,schoolID,grade,msgClass} = this.state;
-        const msg = {
-            schoolID:schoolID,
-            grade: grade,
-            class: msgClass,  
-            productID: productID_selected,
-            level : level
-         }   
+        const {productID_selected,learnID,level,schoolID,grade,msgClass,type} = this.state;
+        let msg;
+        if(type === 0){
+            msg = {
+                schoolID:schoolID,
+                grade: grade,
+                class: msgClass,  
+                productID: productID_selected,
+                level : level
+             }   
+        }else{
+            msg = {
+                schoolID:schoolID,
+                grade: grade,
+                class: msgClass,  
+                productID: productID_selected,
+             }   
+        }
 
         Put(`/api/v3/staffs/classes/productID/`,msg).then(resp=>{
          if(resp.status === 200){

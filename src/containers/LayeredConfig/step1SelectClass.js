@@ -14,6 +14,16 @@ export default class Step1 extends React.Component{
         classMsg : ['',''],
         name_schoolID : {}
     }
+    componentWillMount(){
+        this.setState({
+            type : this.props.type
+        })
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            type : nextProps.type
+        })
+    }
     schoolNameInput(value){
         console.log(value)
         if(value !== ''){
@@ -109,6 +119,8 @@ export default class Step1 extends React.Component{
        }
     }
     render(){
+        const {type} = this.state;
+        if(type === 0){
         return(
             <Row>
                 <Col span={1}></Col>
@@ -126,5 +138,18 @@ export default class Step1 extends React.Component{
                 <Col span={15}></Col>
             </Row>
         )
+        }else{
+            return(
+                <Step1Component schoolNameInput={this.schoolNameInput.bind(this)}
+                                    dataMsgInput={this.dataMsgInput.bind(this)}
+                                    cityWarningHandle={this.cityWarningHandle.bind(this)}
+                                    schoolMsg={this.schoolMsg.bind(this)}
+                                    classMsgInput={this.classMsgInput.bind(this)}
+                                    gradeWarningHandle={this.gradeWarningHandle.bind(this)}
+                                    classWarningHandle={this.classWarningHandle.bind(this)}
+                                    classSure={this.classSure.bind(this)}
+                                    data={this.state}/>
+            )
+        }
     }
 }

@@ -64,14 +64,15 @@ class LayeredConfig extends React.Component {
         const {showStep1,showStep2,showStep3, students,schoolID,grade,msgClass,updateMsg} = this.state;
         return(
             <div>
-                {showStep1 ? <Step1 classSureHandle={this.classSureHandle.bind(this)}/> : null}
+                {showStep1 ? <Step1 classSureHandle={this.classSureHandle.bind(this)} type={0}/> : null}
                 {showStep2 ? <Step2 students={students} 
                                     updateMsg={updateMsg}
                                     updateMsgHandle={this.updateMsgHandle.bind(this)}
                                     step2SureHandle={this.step2SureHandle.bind(this)}/> : null}
                 {showStep3 ? <Step3 schoolID={schoolID}
                                     grade={grade}
-                                    msgClass={msgClass}/> : null}
+                                    msgClass={msgClass}
+                                    type={0}/> : null}
             </div>
         )
     }

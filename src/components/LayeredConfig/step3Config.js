@@ -139,7 +139,8 @@ class Step3 extends React.Component {
             status : this.props.data.productData.status,
 
             showNew : this.props.data.showNew,
-            showCur : this.props.data.showCur
+            showCur : this.props.data.showCur,
+            type : this.props.data.type
         })
     }
     componentWillReceiveProps(nextProps){
@@ -199,7 +200,8 @@ class Step3 extends React.Component {
             status : nextProps.data.productData.status,
 
             showNew : nextProps.data.showNew,
-            showCur : nextProps.data.showCur
+            showCur : nextProps.data.showCur,
+            type : nextProps.data.type
         })
     }
 
@@ -215,7 +217,7 @@ class Step3 extends React.Component {
             deliverExpected,price,subject,grade,allProductId,curProductID,status,showNew,showCur,showDetail} = this.state
             const {problemCode_1,gradation_1,depth_1,name_1,level_1,object_1,epu_1,problemMax_1,pageType_1,problemSource_1 ,serviceType_1,serviceLauncher_1,
                 serviceStartTime_1,serviceEndTime_1,deliverType_1,deliverPriority_1,deliverTime_1,
-                deliverExpected_1,price_1,subject_1,grade_1,status_1,productID_selected} = this.state;
+                deliverExpected_1,price_1,subject_1,grade_1,status_1,productID_selected,type} = this.state;
             const EPUs = ['EPU1','EPU2']
             const gradations = ['第1层 题目','第2层 过程','第3层 引导'];
             const depths = ['第1代 错题','第2代 类型','第3代 考试'];
@@ -253,17 +255,21 @@ class Step3 extends React.Component {
 
         return(
                 <div>
-                    <div>
-                        <span>层级序号:</span>
-                        <Select style={{width:300,marginLeft:20}}
-                                onChange={this.props.selectLevel}>
-                            {children}
-                        </Select>
-                        <Button type='primary' 
-                                style={{width:120,marginLeft:50}}
-                                onClick={this.props.toConfig}>去配置</Button>
-                    </div>
-                    <div className='line'></div>
+                    {
+                        type === 0 ? <div>
+                                            <div>
+                                                <span>层级序号:</span>
+                                                <Select style={{width:300,marginLeft:20}}
+                                                        onChange={this.props.selectLevel}>
+                                                    {children}
+                                                </Select>
+                                                <Button type='primary' 
+                                                        style={{width:120,marginLeft:50}}
+                                                        onClick={this.props.toConfig}>去配置</Button>
+                                            </div>
+                                            <div className='line'></div>
+                                         </div> : null
+                    }
                     {
                                 showDetail ? <div style={{width:'100%',height:400,marginTop:30}}>
                                     <div className='person-box'>

@@ -63,10 +63,11 @@ class Step1 extends React.Component {
                                             gradeWarningHandle = {this.props.gradeWarningHandle}
                                             classWarningHandle = {this.props.classWarningHandle}/>
                     </div>
-                    <div style={{marginTop : 30,textAlign:'center'}}>
+                    <div style={{marginTop : 30}}>
+                        <span className='book-title'></span>
                         <Button type='primary' 
                                 size='large' 
-                                style={{width:300}}
+                                style={{width:300,marginLeft:20}}
                                 onClick={this.props.classSure}>确认</Button>
                     </div>
                 </div>
