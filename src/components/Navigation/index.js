@@ -128,7 +128,7 @@ class Navigation extends Component {
           width={150}
         >
           <div className='head-font'>
-            PPU
+            学习策略分层设计平台PPU
             <span className='pushin' 
                   onClick={this.menuHandle.bind(this)} 
                   style={!hideMenu?{display:'none'}:{display:'none'}

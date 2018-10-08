@@ -314,7 +314,7 @@ class FirstProductDesign extends React.Component{
                     <Col span={1}></Col>
                     <Col span={23}>
                         <div className='title-large-content'>
-                            <div>错题学习机制</div>
+                            <div>学习策略</div>
                             <div>支撑产品设计</div>
                         </div>
                         <Mark title='问题' textArr={['错题学习']} markClick={this.markClick.bind(this)}/>
