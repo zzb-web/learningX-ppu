@@ -27,7 +27,14 @@ class Step2 extends React.Component {
     }
     render(){
         const {students,showNew,nums} = this.state;
-        let menus = [],newChildren = [];
+        console.log(nums)
+        let newMsg = '';
+        if(nums === 0){
+            newMsg = ''
+        }else{
+            newMsg = nums;
+        }
+        let menus = [],menus_2 = [],newChildren = [];
         for(let i=2;i<=10;i++){
             menus.push(
                  <Menu.Item key={i}>{i}</Menu.Item>
@@ -39,6 +46,18 @@ class Step2 extends React.Component {
             </Menu>
           );
         
+        // for(var i=1;i<=nums;i++){
+        //     menus_2.push(
+        //         <Menu.Item key={i}>{i}</Menu.Item>
+        //     )
+        // }
+
+        // const menu_2 = (
+        //     <Menu onClick={this.props.newHandle}>
+        //         {menus_2}
+        //     </Menu>
+        //   );
+
           for(let i=1;i<=nums;i++){
             newChildren.push(
                 <Option value={i} key={i}>{i}</Option>
@@ -69,7 +88,7 @@ class Step2 extends React.Component {
             {
                 title:<span>新层级设定<span className='newClass'><Dropdown overlay={menu} trigger={['click']}>
                                                 <a className="ant-dropdown-link" href="">
-                                                新层数 <Icon type="down" />
+                                                新层数 {newMsg} <Icon type="down" />
                                                 </a>
                                             </Dropdown></span></span>,
                 dataIndex : 'new',
@@ -84,12 +103,14 @@ class Step2 extends React.Component {
                 learnID : item.learnID,
                 name : item.name,
                 now : item.level === -1 ? '/' : item.level,
-                // new :  showNew ? <Dropdown overlay={menu_1} trigger={['click']}>
+                // new :  showNew ? <Dropdown overlay={menu_2} trigger={['click']}>
                 //                     <a className="ant-dropdown-link" href="">
-                //                     层级序号 <Icon type="down" />
+                //                     层级序号<Icon type="down" />
                 //                     </a>
                 //                 </Dropdown> : ''
-                new : showNew ? <Select style={{width:120}} onChange={this.everyChange.bind(this,index)}>
+                new : showNew ? <Select style={{width:120}} 
+                                        placeholder='层级序号'
+                                        onChange={this.everyChange.bind(this,index)}>
                                     {newChildren}
                                 </Select> : null
             })

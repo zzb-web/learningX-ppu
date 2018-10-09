@@ -12,6 +12,7 @@ export default class Step2 extends React.Component{
             nums : Number(value.key),
             showNew : true
         })
+        this.props.getNums(Number(value.key))
     }
     everyChange(index,value){
         console.log(index,value)

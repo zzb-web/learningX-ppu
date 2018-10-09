@@ -2,7 +2,7 @@ import React from 'react';
 import Step1 from './step1SelectClass.js';
 import Step2 from './step2Table.js';
 import Step3 from './step3Config.js'
-import {Put} from '../../fetch/data.js'
+import {Put,Post} from '../../fetch/data.js'
 class LayeredConfig extends React.Component {
     state={
         showStep1 : true,
@@ -15,7 +15,8 @@ class LayeredConfig extends React.Component {
         schoolID : '',
         grade : '',
         msgClass : '',
-        updateMsg : {}
+        updateMsg : {},
+        nums : 0
     }
     classSureHandle(data,schoolID,grade,msgClass){
         this.setState({
@@ -27,27 +28,45 @@ class LayeredConfig extends React.Component {
             msgClass : msgClass
         })
     }
+    getNums(value){
+        this.setState({
+            nums : value
+        })
+    }
     step2SureHandle(){
-        const {updateMsg} = this.state;
-        if(!this._objIsEmpty(updateMsg)){
-            let putMsg = [];
-            for(var key in updateMsg){
-                putMsg.push({
-                    learnID: Number(key),
-                    level: updateMsg[key]
-                })
+        const {updateMsg,nums,schoolID,grade,msgClass} = this.state;
+        if(nums !== 0){
+            let postMsg = {
+                schoolID: schoolID,
+                grade: grade,
+                class: msgClass,
+                totalLevel: nums,
             }
-            Put(`/api/v3/staffs/classes/students/level/`,putMsg).then(resp=>{
-
+            Post(`/api/v3/staffs/classes/totalLevel/`,postMsg).then(resp=>{
+    
             }).catch(err=>{
 
             })
+
+            if(!this._objIsEmpty(updateMsg)){
+                let putMsg = [];
+                for(var key in updateMsg){
+                    putMsg.push({
+                        learnID: Number(key),
+                        level: updateMsg[key]
+                    })
+                }
+                Put(`/api/v3/staffs/classes/students/level/`,putMsg).then(resp=>{
+    
+                }).catch(err=>{
+    
+                })
+            }
+            this.setState({
+                showStep2 : false,
+                showStep3 : true
+            })
         }
-        
-        this.setState({
-            showStep2 : false,
-            showStep3 : true
-        })
     }
     _objIsEmpty(obj) {
         for(var key in obj) {
@@ -68,6 +87,7 @@ class LayeredConfig extends React.Component {
                 {showStep2 ? <Step2 students={students} 
                                     updateMsg={updateMsg}
                                     updateMsgHandle={this.updateMsgHandle.bind(this)}
+                                    getNums={this.getNums.bind(this)}
                                     step2SureHandle={this.step2SureHandle.bind(this)}/> : null}
                 {showStep3 ? <Step3 schoolID={schoolID}
                                     grade={grade}
