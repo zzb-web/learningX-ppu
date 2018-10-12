@@ -6,22 +6,26 @@ class Cpu extends React.Component{
         this.state={
             epu: props.epu,
             problemMax: props.problemMax,
-            pageType: props.pageType
+            pageType: props.pageType,
+            depth : props.depth
         }
     }
     componentWillReceiveProps(nextProps){
         this.setState({
             epu: nextProps.epu,
             problemMax: nextProps.problemMax,
-            pageType: nextProps.pageType
+            pageType: nextProps.pageType,
+            depth : nextProps.depth
         })
     }
     epuHandle(value){
         let epu;
         if(value === 'EPU1'){
             epu = 1;
-        }else{
+        }else if(value ==='EPU2'){
             epu = 2;
+        }else{
+            epu = 3;
         }
         this.setState({
             epu : epu

@@ -324,7 +324,7 @@ class FirstProductDesign extends React.Component{
                                     name={name} 
                                     level={level} 
                                     object={object}/>
-                        <Cpu cpuHandle={this.cpuHandle.bind(this)} epu={epu} problemMax={problemMax} pageType={pageType}/>
+                        <Cpu cpuHandle={this.cpuHandle.bind(this)} depth={depth} epu={epu} problemMax={problemMax} pageType={pageType}/>
                         <ErrorSource errorSourceHandle={this.errorSourceHandle.bind(this)} problemSource={problemSource}/>
                         <Service serviceHandle={this.serviceHandle.bind(this)} 
                                  serviceType={serviceType} 
