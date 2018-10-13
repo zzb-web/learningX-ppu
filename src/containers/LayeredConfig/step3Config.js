@@ -48,6 +48,13 @@ export default class Step3 extends React.Component{
                 price: '',
                 subject: '',
                 grade: '',
+                wrongProblemStatus : 0,
+                problemType : [],
+                sameTypeMax : 0,
+                sameTypeSource :[],
+                columnCount: '' ,
+                borderControl: '',
+                exceptionHandler : ''
             },
             productData :  {
                 problemCode:'E',
@@ -81,6 +88,13 @@ export default class Step3 extends React.Component{
                 price: '',
                 subject: '',
                 grade: '',
+                wrongProblemStatus : 0,
+                problemType : [],
+                sameTypeMax : 0,
+                sameTypeSource :[],
+                columnCount: '' ,
+                borderControl: '',
+                exceptionHandler : ''
             },
             curProductID : '',
             showCur : false,

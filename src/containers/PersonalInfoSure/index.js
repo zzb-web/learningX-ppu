@@ -44,6 +44,13 @@ class PersonalInfoSure extends React.Component{
             price: '',
             subject: '',
             grade: '',
+            wrongProblemStatus : 0,
+            problemType : [],
+            sameTypeMax : 0,
+            sameTypeSource :[],
+            columnCount: '' ,
+            borderControl: '',
+            exceptionHandler : ''
         },
         productData :  {
             problemCode:'E',
@@ -77,6 +84,13 @@ class PersonalInfoSure extends React.Component{
             price: '',
             subject: '',
             grade: '',
+            wrongProblemStatus : 0,
+            problemType : [],
+            sameTypeMax : 0,
+            sameTypeSource :[],
+            columnCount: '' ,
+            borderControl: '',
+            exceptionHandler : ''
         },
         curProductID : '',
         productID_selected : '',

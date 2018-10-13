@@ -6,12 +6,16 @@ class ErrorSource extends React.Component{
     constructor(props){
         super();
         this.state={
-            problemSource : props.problemSource
+            problemSource : props.problemSource,
+            epu : props.epu,
+            depth : props.depth
         }
     }
     componentWillReceiveProps(nextProps){
         this.setState({
-            problemSource : nextProps.problemSource
+            problemSource : nextProps.problemSource,
+            epu : nextProps.epu,
+            depth : nextProps.depth
         })
     }
     errMark(value){

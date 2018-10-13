@@ -4,8 +4,10 @@ import Mark from './mark.js';
 import Population from './population.js';
 import Cpu from './cpuhandle.js';
 import ErrorSource from './errorSource.js';
+import DocumentForm from './documentForm.js'
 import Service from './service.js';
 import DocDelivery from './docDelivery.js';
+import AbnormalHandle from './abnormalHandle.js'
 import Price from './price.js';
 import OtherMsg from './otherMsg.js';
 import AddService from './addService.js';
@@ -50,7 +52,17 @@ class FirstProductDesign extends React.Component{
         subject: '',  // 学科
         grade: '',  // 年级（全部直接用“全部”
         way : 0,
-        productID : ''
+        productID : '',
+
+        wrongProblemStatus : 0,
+        problemType : [],
+        sameTypeMax : 0,
+        sameTypeSource :[],
+
+        columnCount: '' ,
+        borderControl: '',
+
+        exceptionHandler : ''
       }
     markClick(value){   
         let type = value[0];
@@ -83,9 +95,54 @@ class FirstProductDesign extends React.Component{
             pageType: value[2]
         })
     }
+    errStatusHandle(value){
+        this.setState({
+            wrongProblemStatus :value
+        })
+    }
+    problemTypeHandle(value){
+        this.setState({
+            problemType :value
+        })
+    }
+    sameTypeMaxHandle(value){
+        this.setState({
+            sameTypeMax : value
+        })
+    }
+    sameTypeSourceHandle(value){
+        this.setState({
+            sameTypeSource :value
+        })
+    }
     errorSourceHandle(value){
         this.setState({
             problemSource : value
+        })
+    }
+
+    paperHandle(value){
+        this.setState({
+            pageType : value
+        })
+    }
+
+    scoreHandle(value){
+        this.setState({
+            columnCount : value
+        })
+    }
+
+    borderControlHandle(value){
+        this.setState({
+            borderControl : value
+        })
+    }
+
+    abnormalHandle(value){
+        console.log(value)
+        this.setState({
+            exceptionHandler : value
         })
     }
     serviceHandle(value){
@@ -131,7 +188,8 @@ class FirstProductDesign extends React.Component{
     submitOK(){
         let {problemCode,gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
             serviceStartTime,serviceEndTime,deliverType,deliverPriority,deliverTime,
-            deliverExpected,price,subject,grade,way} = this.state
+            deliverExpected,price,subject,grade,way, wrongProblemStatus,problemType,sameTypeMax,sameTypeSource,
+            columnCount,borderControl,exceptionHandler} = this.state
             var newdeliverTime = [];
             deliverTime.map((item,index)=>{
                 if(item !== ''&& item.day !==''&& item.time !==''){
@@ -150,31 +208,69 @@ class FirstProductDesign extends React.Component{
                 deliverExpected_1 = deliverExpected;
                 deliverPriority_1 = deliverPriority;
             }
-        let postMsg = {
-            problemCode:problemCode,
-            gradation: gradation,
-            depth:depth,
-            name: name, 
-            level: level, 
-            object: object,  
-            epu: epu, 
-            problemMax:problemMax, 
-            pageType: pageType, 
-            problemSource : problemSource,
-            serviceType: serviceType,
-            serviceLauncher: serviceLauncher, 
-            serviceStartTime: parseInt(serviceStartTime),
-            serviceEndTime: parseInt(serviceEndTime),
-            // serviceTimes: serviceTimes,
-            // serviceDuration: serviceDuration,
-            deliverType: deliverType,
-            deliverPriority: deliverPriority_1,
-            deliverTime: deliverTime_1,
-            deliverExpected: deliverExpected_1,
-            price: price,
-            subject: subject,
-            grade: grade
+        let  postMsg;
+        if(depth === 2 && epu === 3){
+            postMsg = {
+                problemCode:problemCode,
+                gradation: gradation,
+                depth:depth,
+                name: name, 
+                level: level, 
+                object: object,  
+                epu: epu, 
+                problemMax:problemMax, 
+                wrongProblemStatus:wrongProblemStatus, 
+                problemType:problemType,
+                sameTypeMax: sameTypeMax,
+                sameTypeSource: sameTypeSource,
+                pageType: pageType, 
+                columnCount: columnCount, 
+                borderControl: borderControl, 
+                problemSource : problemSource,
+                serviceType: serviceType,
+                serviceLauncher: serviceLauncher, 
+                serviceStartTime: parseInt(serviceStartTime),
+                serviceEndTime: parseInt(serviceEndTime),
+                // serviceTimes: serviceTimes,
+                // serviceDuration: serviceDuration,
+                deliverType: deliverType,
+                deliverPriority: deliverPriority_1,
+                deliverTime: deliverTime_1,
+                deliverExpected: deliverExpected_1,
+                exceptionHandler : exceptionHandler,
+                price: price,
+                subject: subject,
+                grade: grade
+            }
+        }else{
+            postMsg = {
+                problemCode:problemCode,
+                gradation: gradation,
+                depth:depth,
+                name: name, 
+                level: level, 
+                object: object,  
+                epu: epu, 
+                problemMax:problemMax, 
+                pageType: pageType, 
+                problemSource : problemSource,
+                serviceType: serviceType,
+                serviceLauncher: serviceLauncher, 
+                serviceStartTime: parseInt(serviceStartTime),
+                serviceEndTime: parseInt(serviceEndTime),
+                // serviceTimes: serviceTimes,
+                // serviceDuration: serviceDuration,
+                deliverType: deliverType,
+                deliverPriority: deliverPriority_1,
+                deliverTime: deliverTime_1,
+                deliverExpected: deliverExpected_1,
+                price: price,
+                subject: subject,
+                grade: grade
+            }
         }
+        
+
         if(way === 1){
             const {productID} = this.state;
             Put(`/api/v3/staffs/products/${productID}/`,postMsg).then(resp=>{
@@ -248,6 +344,13 @@ class FirstProductDesign extends React.Component{
                         price : e.price,
                         subject: e.subject, 
                         grade: e.grade, 
+                        wrongProblemStatus : e.wrongProblemStatus,
+                        problemType : e.problemType,
+                        sameTypeMax : e.sameTypeMax,
+                        sameTypeSource :e.sameTypeSource,
+                        columnCount: e.columnCount ,
+                        borderControl: e.borderControl,
+                        exceptionHandler : e.exceptionHandler
                       })
                 }   
             })
@@ -260,11 +363,14 @@ class FirstProductDesign extends React.Component{
     render(){
         const {height,problemCode,gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
                 serviceStartTime,serviceEndTime,deliverType,deliverPriority,deliverTime,
-                deliverExpected,price,subject,grade} = this.state
+                deliverExpected,price,subject,grade,wrongProblemStatus,problemType,sameTypeMax,sameTypeSource,
+                columnCount,borderControl,exceptionHandler} = this.state
         const EPUs = ['EPU1','EPU2']
         const gradations = ['第1层 题目','第2层 过程','第3层 引导'];
         const depths = ['第1代 错题','第2代 类型','第3代 考试'];
-        const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
+        const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+        const errStatus = ['现在仍错的题','曾经错过的题'];
+        const handles = ['全部标记为√再生成','全部标记为×再生成','不生成'];
         let deliverTimeMsg = '';
         deliverTime.map((item,index)=>{
             if(item.day !== '' && item.time !== ''){
@@ -285,7 +391,7 @@ class FirstProductDesign extends React.Component{
                             <span style={deliverExpected ===''?{color:'red'}:null}>交付预期</span>:{deliverExpected}小时以内
                         </span>
         }
-        const detailMsg = <div>
+        const detailMsg = <div style={{height:200,overflow:'auto'}}>
                             <div><span>问题:错题学习</span></div>
                             <div>{`层次:${gradations[gradation-1]}`}</div>
                             <div>{`深度:${depths[depth-1]}`}</div>
@@ -293,16 +399,37 @@ class FirstProductDesign extends React.Component{
                                       <span style={level===''?{color:'red'}:null}>产品级别</span>:{level}|
                                       <span style={object===''?{color:'red'}:null}>产品对象</span>:{object}
                             </div>
-                            <div>处理器:<span style={epu===''?{color:'red'}:null}>EPU</span>:{EPUs[epu-1]}|
-                                        <span style={problemMax===''?{color:'red'}:null}>题量控制</span>:{problemMax}|
-                                        <span style={pageType===''?{color:'red'}:null}>纸张大小</span>:{pageType}
-                            </div>
+                           {
+                               epu=== 3 && depth === 2 ? <div>处理器:
+                                                            <span style={epu===''?{color:'red'}:null}>EPU</span>:{EPUs[epu-1]}|
+                                                            <span style={problemMax===''?{color:'red'}:null}>题量控制</span>:{problemMax}|
+                                                            <span style={wrongProblemStatus===0?{color:'red'}:null}>错题状态</span>:{errStatus[wrongProblemStatus-1]}|
+                                                            <span style={problemType.length === 0?{color:'red'}:null}>题目种类</span>:{`${problemType}`}|
+                                                            <span style={sameTypeMax===0?{color:'red'}:null}>同类题量</span>:{problemMax}|
+                                                            <span style={sameTypeSource.length === 0?{color:'red'}:null}>同类来源</span>:{`${sameTypeSource}`}|
+                                                        </div> : 
+                               <div>处理器:<span style={epu===''?{color:'red'}:null}>EPU</span>:{EPUs[epu-1]}|
+                                    <span style={problemMax===''?{color:'red'}:null}>题量控制</span>:{problemMax}|
+                                    <span style={pageType===''?{color:'red'}:null}>纸张大小</span>:{pageType}
+                                </div>
+                           }
                             <div>错题源:<span style={problemSource.length===0?{color:'red'}:null}>错题源</span>:{`${problemSource}`}</div>
+                            {epu=== 3 && depth === 2 ? 
+                            <div>文档形式：
+                               <span style={pageType===''?{color:'red'}:null}>纸张大小</span>:{pageType}
+                               <span style={columnCount=== ''?{color:'red'}:null}>分数栏</span>:{columnCount}
+                               <span style={borderControl===''?{color:'red'}:null}>边界控制</span>:{borderControl}
+                            </div> : null}
                             <div>服务:<span style={serviceType===''?{color:'red'}:null}>服务类型</span>:{serviceType}|
                                       <span style={serviceLauncher===''?{color:'red'}:null}>服务发起</span>:{serviceLauncher}|
                                       <span style={this.timestampToTime(serviceStartTime)==='' || this.timestampToTime(serviceEndTime) === '' ?{color:'red'}:null}>服务时段</span>:{this.timestampToTime(serviceStartTime)}~{this.timestampToTime(serviceEndTime)}
                             </div>
                             <div>文档交付:<span style={deliverType===''?{color:'red'}:null}>交付类型</span>:{deliverType}|{deliverMsg}</div> 
+                            {epu=== 3 && depth === 2 ? 
+                                <div>
+                                    异常处理:<span style={exceptionHandler===''?{color:'red'}:null}>异常处理</span>:{handles[exceptionHandler-1]}
+                                </div> : null
+                            }
                             <div><span style={price ==='' || parseInt(price,10) === 0?{color:'red'}:null}>价格</span>:{price}元</div>
                             <div>其他信息:<span style={subject===''?{color:'red'}:null}>学科</span>:{subject}|
                                          <span style={grade===''?{color:'red'}:null}>年级</span>:{grade}
@@ -323,9 +450,33 @@ class FirstProductDesign extends React.Component{
                         <Population populationHandle={this.populationHandle.bind(this)} 
                                     name={name} 
                                     level={level} 
-                                    object={object}/>
-                        <Cpu cpuHandle={this.cpuHandle.bind(this)} depth={depth} epu={epu} problemMax={problemMax} pageType={pageType}/>
-                        <ErrorSource errorSourceHandle={this.errorSourceHandle.bind(this)} problemSource={problemSource}/>
+                                    object={object}
+                                    />
+                        <Cpu cpuHandle={this.cpuHandle.bind(this)}
+                             errStatusHandle={this.errStatusHandle.bind(this)}
+                             problemTypeHandle={this.problemTypeHandle.bind(this)}
+                             sameTypeMaxHandle={this.sameTypeMaxHandle.bind(this)}
+                             sameTypeSourceHandle={this.sameTypeSourceHandle.bind(this)}
+                             depth={depth} 
+                             epu={epu} 
+                             problemMax={problemMax} 
+                             pageType={pageType}
+                             wrongProblemStatus={wrongProblemStatus}
+                             problemType={problemType}
+                             sameTypeMax={sameTypeMax}
+                             sameTypeSource={sameTypeSource}
+                             />
+                        <ErrorSource errorSourceHandle={this.errorSourceHandle.bind(this)} 
+                                     epu={epu}
+                                     depth={depth}
+                                     problemSource={problemSource}
+                                     />
+                        {depth === 2 && epu === 3 ? <DocumentForm  pageType={pageType}
+                                      columnCount={columnCount}
+                                      borderControl={borderControl}
+                                      paperHandle={this.paperHandle.bind(this)}
+                                      scoreHandle={this.scoreHandle.bind(this)}
+                                      borderControlHandle={this.borderControlHandle.bind(this)}/>: null}
                         <Service serviceHandle={this.serviceHandle.bind(this)} 
                                  serviceType={serviceType} 
                                  serviceLauncher={serviceLauncher} 
@@ -336,6 +487,9 @@ class FirstProductDesign extends React.Component{
                                      deliverPriority={deliverPriority}
                                      deliverTime={deliverTime}
                                      deliverExpected={deliverExpected}/>
+                        {depth === 2 && epu === 3 ?<AbnormalHandle exceptionHandler={exceptionHandler}
+                                        abnormalHandle={this.abnormalHandle.bind(this)}/>
+                                    : null}
                         <Price priceHandle={this.priceHandle.bind(this)} price={price}/>
                         <OtherMsg otherMsgHandle={this.otherMsgHandle.bind(this)}
                                   subject={subject}

@@ -7,7 +7,11 @@ class Cpu extends React.Component{
             epu: props.epu,
             problemMax: props.problemMax,
             pageType: props.pageType,
-            depth : props.depth
+            depth : props.depth,
+            wrongProblemStatus : props.wrongProblemStatus,
+            problemType : props.problemType,
+            sameTypeMax : props.sameTypeMax,
+            sameTypeSource : props.sameTypeSource,
         }
     }
     componentWillReceiveProps(nextProps){
@@ -15,7 +19,11 @@ class Cpu extends React.Component{
             epu: nextProps.epu,
             problemMax: nextProps.problemMax,
             pageType: nextProps.pageType,
-            depth : nextProps.depth
+            depth : nextProps.depth,
+            wrongProblemStatus : nextProps.wrongProblemStatus,
+            problemType : nextProps.problemType,
+            sameTypeMax : nextProps.sameTypeMax,
+            sameTypeSource : nextProps.sameTypeSource,
         })
     }
     epuHandle(value){
@@ -41,12 +49,28 @@ class Cpu extends React.Component{
         const {epu,problemMax} = this.state;
         this.props.cpuHandle([epu,problemMax,value])
     }
+    errStatusHandle(value){
+        this.props.errStatusHandle(value)
+    }
+    problemTypeHandle(value){
+        this.props.problemTypeHandle(value)
+    }
+    sameTypeMaxHandle(value){
+        this.props.sameTypeMaxHandle(value)
+    }
+    sameTypeSourceHandle(value){
+        this.props.sameTypeSourceHandle(value)
+    }
     render(){
         return(
             <div>
                 <CpuComponent epuHandle={this.epuHandle.bind(this)}
                               topicHandle={this.topicHandle.bind(this)}
                               paperHandle={this.paperHandle.bind(this)}
+                              errStatusHandle={this.errStatusHandle.bind(this)}
+                              problemTypeHandle={this.problemTypeHandle.bind(this)}
+                              sameTypeMaxHandle={this.sameTypeMaxHandle.bind(this)}
+                              sameTypeSourceHandle={this.sameTypeSourceHandle.bind(this)}
                               data={this.state}/>
             </div>
         )

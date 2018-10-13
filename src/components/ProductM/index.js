@@ -2,7 +2,7 @@ import React from 'react';
 import {TreeSelect,Button,Table, Select, Menu, Dropdown,Icon} from 'antd';
 const {Option} = Select;
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
-const EPUs = ['EPU1','EPU2']
+const EPUs = ['EPU1','EPU2','EPU3']
 
 class ProductM extends React.Component{
     timestampToTime(timestamp) {
@@ -145,6 +145,7 @@ class ProductM extends React.Component{
                                 onChange={this.props.onEPUChange}>
                             <Option value='1'>EPU1</Option>
                             <Option value='2'>EPU2</Option>
+                            <Option value='3'>EPU3</Option>
                             <Option value='-1'>全部</Option>
                         </Select>
                         <Select style={{width:150,marginLeft:30}} 

@@ -66,7 +66,7 @@ class Service extends React.Component{
                         onOk={this.props.serviceTimeOk}
                         />
                    </div>
-                   {/* <div className='service-content'>
+                   <div className='service-content'>
                    <span style={{marginLeft:10}}>服务次数:</span>
                         <Select style={{width:'20%',marginLeft:10}}>
                           
@@ -76,7 +76,7 @@ class Service extends React.Component{
                         <Select style={{width:'20%',marginLeft:10}}>
                             
                         </Select>
-                   </div> */}
+                   </div>
                 </div>
             </div>
         )

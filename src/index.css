@@ -117,6 +117,17 @@ body {
   text-align: center;
   cursor: pointer;
 }
+.err-mark-1{
+  width: 25%;
+  float: left;
+  border: 1px solid #dadada;
+  border-right: none;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
 .err-mark:last-child{
   border-right: 1px solid #dadada;
 }
@@ -285,4 +296,21 @@ body {
   border-radius: 5px;
   overflow: hidden;
   padding: 10px;
+}
+.multiBox{
+  display: inline-block;
+  width: 50%;
+}
+.multiOne{
+  display:inline-block;
+  width: 33%;
+  border: 1px solid #dadada;
+  border-right: none;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+.multiOne:last-child{
+  border-right: 1px solid #dadada;
 }

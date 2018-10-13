@@ -112,6 +112,14 @@ class Step3 extends React.Component {
             status_1 : this.props.data.productData_1.status,
             productID_selected :  this.props.data.productID_selected,
 
+            wrongProblemStatus_1 :this.props.data.productData_1.wrongProblemStatus,
+            problemType_1 : this.props.data.productData_1.problemType,
+            sameTypeMax_1:this.props.data.productData_1.sameTypeMax,
+            sameTypeSource_1 :this.props.data.productData_1.sameTypeSource,
+            columnCount_1: this.props.data.productData_1.columnCount ,
+            borderControl_1: this.props.data.productData_1.borderControl,
+            exceptionHandler_1 : this.props.data.productData_1.exceptionHandler,
+
             curProductID :this.props.data.curProductID,
             problemCode: this.props.data.productData.problemCode,
             gradation: this.props.data.productData.gradation,
@@ -137,6 +145,14 @@ class Step3 extends React.Component {
             subject: this.props.data.productData.subject, 
             grade: this.props.data.productData.grade,
             status : this.props.data.productData.status,
+
+            wrongProblemStatus :this.props.data.productData.wrongProblemStatus,
+            problemType : this.props.data.productData.problemType,
+            sameTypeMax:this.props.data.productData.sameTypeMax,
+            sameTypeSource :this.props.data.productData.sameTypeSource,
+            columnCount: this.props.data.productData.columnCount ,
+            borderControl: this.props.data.productData.borderControl,
+            exceptionHandler : this.props.data.productData.exceptionHandler,
 
             showNew : this.props.data.showNew,
             showCur : this.props.data.showCur,
@@ -173,6 +189,14 @@ class Step3 extends React.Component {
             status_1 : nextProps.data.productData_1.status,
             productID_selected : nextProps.data.productID_selected,
 
+            wrongProblemStatus_1 :nextProps.data.productData_1.wrongProblemStatus,
+            problemType_1 : nextProps.data.productData_1.problemType,
+            sameTypeMax_1:nextProps.data.productData_1.sameTypeMax,
+            sameTypeSource_1 :nextProps.data.productData_1.sameTypeSource,
+            columnCount_1: nextProps.data.productData_1.columnCount ,
+            borderControl_1: nextProps.data.productData_1.borderControl,
+            exceptionHandler_1 : nextProps.data.productData_1.exceptionHandler,
+
             curProductID : nextProps.data.curProductID,
             problemCode: nextProps.data.productData.problemCode,
             gradation: nextProps.data.productData.gradation,
@@ -199,6 +223,14 @@ class Step3 extends React.Component {
             grade: nextProps.data.productData.grade,
             status : nextProps.data.productData.status,
 
+            wrongProblemStatus :nextProps.data.productData.wrongProblemStatus,
+            problemType : nextProps.data.productData.problemType,
+            sameTypeMax:nextProps.data.productData.sameTypeMax,
+            sameTypeSource :nextProps.data.productData.sameTypeSource,
+            columnCount: nextProps.data.productData.columnCount ,
+            borderControl: nextProps.data.productData.borderControl,
+            exceptionHandler : nextProps.data.productData.exceptionHandler,
+
             showNew : nextProps.data.showNew,
             showCur : nextProps.data.showCur,
             type : nextProps.data.type
@@ -214,14 +246,18 @@ class Step3 extends React.Component {
         }
         const {problemCode,gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
             serviceStartTime,serviceEndTime,deliverType,deliverPriority,deliverTime,
-            deliverExpected,price,subject,grade,allProductId,curProductID,status,showNew,showCur,showDetail} = this.state
+            deliverExpected,price,subject,grade,allProductId,curProductID,status,showNew,showCur,showDetail,wrongProblemStatus,problemType,sameTypeMax,sameTypeSource,
+            columnCount,borderControl,exceptionHandler} = this.state
             const {problemCode_1,gradation_1,depth_1,name_1,level_1,object_1,epu_1,problemMax_1,pageType_1,problemSource_1 ,serviceType_1,serviceLauncher_1,
                 serviceStartTime_1,serviceEndTime_1,deliverType_1,deliverPriority_1,deliverTime_1,
-                deliverExpected_1,price_1,subject_1,grade_1,status_1,productID_selected,type} = this.state;
-            const EPUs = ['EPU1','EPU2']
+                deliverExpected_1,price_1,subject_1,grade_1,status_1,productID_selected,type,wrongProblemStatus_1,problemType_1,sameTypeMax_1,sameTypeSource_1,
+                columnCount_1,borderControl_1,exceptionHandler_1} = this.state;
+            const EPUs = ['EPU1','EPU2','EPU3']
             const gradations = ['第1层 题目','第2层 过程','第3层 引导'];
             const depths = ['第1代 错题','第2代 类型','第3代 考试'];
-            const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
+            const weeks = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+            const errStatus = ['现在仍错的题','曾经错过的题'];
+            const handles = ['全部标记为√再生成','全部标记为×再生成','不生成'];
             let deliverTimeMsg = '';
         deliverTime.map((item,index)=>{
             if(item.day !== '' && item.time !== ''){
@@ -290,11 +326,21 @@ class Step3 extends React.Component {
                                                     <div>{`层次:${gradations[gradation-1]}`}</div>
                                                     <div>{`深度:${depths[depth-1]}`}</div>
                                                     <div>{`总体:产品名称:${name}/产品级别:${level}/产品对象:${object}`}</div>
-                                                    <div>{`处理器:EPU:${EPUs[epu-1]}/题量控制:${problemMax}/纸张大小:${pageType}`}</div>
+                                                    {
+                                                        epu === 3 ? <div>{`处理器:EPU:${EPUs[epu-1]}/题量控制:${problemMax}/错题状态:${errStatus[wrongProblemStatus-1]}
+                                                        /题目种类:${problemType}/同类题量:${sameTypeMax}/同类来源:${sameTypeSource}`}</div>:
+                                                        <div>{`处理器:EPU:${EPUs[epu-1]}/题量控制:${problemMax}/纸张大小:${pageType}`}</div>
+                                                    }
                                                     <div>{`错题源:${problemSource}`}</div>
+                                                    {
+                                                        epu === 3 ? <div>{`文档形式:纸张大小:${pageType}/分数栏:${columnCount}/边界控制:${borderControl}`}</div> : null
+                                                    }
                                                     <div>{`服务:服务类型:${serviceType}/服务发起:${serviceLauncher}/
                                 服务时段:${this.timestampToTime(serviceStartTime)}~${this.timestampToTime(serviceEndTime)}`}</div>
                                                     <div>{`文档交付:交付类型:${deliverType}/${deliverMsg}`}</div>
+                                                    {
+                                                        epu === 3 ? <div>{`异常处理:${handles[exceptionHandler-1]}`}</div> : null
+                                                    }
                                                     <div>{`价格:${price}元`}</div>
                                                     <div>{`其他信息:学科:${subject}/年级:${grade}`}</div>
                                                 </div> : <div className='person-msg'></div>}
@@ -326,11 +372,21 @@ class Step3 extends React.Component {
                                                     <div>{`层次:${gradations[gradation_1-1]}`}</div>
                                                     <div>{`深度:${depths[depth_1-1]}`}</div>
                                                     <div>{`总体:产品名称:${name_1}/产品级别:${level_1}/产品对象:${object_1}`}</div>
-                                                    <div>{`处理器:EPU:${EPUs[epu_1-1]}/题量控制:${problemMax_1}/纸张大小:${pageType_1}`}</div>
+                                                    {
+                                                        epu_1 === 3 ? <div>{`处理器:EPU:${EPUs[epu_1-1]}/题量控制:${problemMax_1}/错题状态:${errStatus[wrongProblemStatus_1-1]}
+                                                        /题目种类:${problemType_1}/同类题量:${sameTypeMax_1}/同类来源:${sameTypeSource_1}`}</div>:
+                                                        <div>{`处理器:EPU:${EPUs[epu_1-1]}/题量控制:${problemMax_1}/纸张大小:${pageType_1}`}</div>
+                                                    }
                                                     <div>{`错题源:${problemSource_1}`}</div>
+                                                    {
+                                                        epu_1 === 3 ? <div>{`文档形式:纸张大小:${pageType_1}/分数栏:${columnCount_1}/边界控制:${borderControl_1}`}</div> : null
+                                                    }
                                                     <div>{`服务:服务类型:${serviceType_1}/服务发起:${serviceLauncher_1}/
                                 服务时段:${this.timestampToTime(serviceStartTime_1)}~${this.timestampToTime(serviceEndTime_1)}`}</div>
                                                     <div>{`文档交付:交付类型:${deliverType_1}/${deliverMsg_1}`}</div>
+                                                    {
+                                                        epu_1 === 3 ? <div>{`异常处理:${handles[exceptionHandler_1-1]}`}</div> : null
+                                                    }
                                                     <div>{`价格:${price_1}元`}</div>
                                                     <div>{`其他信息:学科:${subject_1}/年级:${grade_1}`}</div>
                                                 </div> : <div className='person-msg'></div>
