@@ -86,10 +86,6 @@ class LayeredConfig extends React.Component {
         }else{
                  message.error('有学生未选择新层级');
         }
-        this.setState({
-            showStep2 : false,
-            showStep3 : true
-        })
     }
     updateMsgHandle(data){
         this.setState({
