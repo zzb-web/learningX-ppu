@@ -99,6 +99,7 @@ export default class Step3 extends React.Component{
             curProductID : '',
             showCur : false,
             showNew : false,
+            nums : props.nums
         }
     }
     componentWillMount(){
@@ -116,7 +117,8 @@ export default class Step3 extends React.Component{
             schoolID : nextProps.schoolID,
             grade : nextProps.grade,
             msgClass : nextProps.msgClass,
-            type : type
+            type : type,
+            nums : nextProps.nums
         })
         if(type === 1){
             this.toConfig();

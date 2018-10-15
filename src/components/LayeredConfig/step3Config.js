@@ -156,7 +156,9 @@ class Step3 extends React.Component {
 
             showNew : this.props.data.showNew,
             showCur : this.props.data.showCur,
-            type : this.props.data.type
+            type : this.props.data.type,
+
+            nums : this.props.data.nums
         })
     }
     componentWillReceiveProps(nextProps){
@@ -233,13 +235,17 @@ class Step3 extends React.Component {
 
             showNew : nextProps.data.showNew,
             showCur : nextProps.data.showCur,
-            type : nextProps.data.type
+            type : nextProps.data.type,
+
+            nums : nextProps.data.nums
         })
     }
 
     render(){
+        const {nums} = this.state;
+        console.log(nums)
         let children = [];
-        for(let i=1;i<=10;i++){
+        for(let i=1;i<=nums;i++){
             children.push(
                 <Option value={i}>{i}</Option>
             )

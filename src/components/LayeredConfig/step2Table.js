@@ -10,13 +10,15 @@ class Step2 extends React.Component {
             students : props.students,
             showNew :　props.showNew,
             nums : props.nums,
+            totalLevel : props.totalLevel
         }
     }
     componentWillReceiveProps(nextProps){
         this.setState({
             students : nextProps.students,
             showNew : nextProps.showNew,
-            nums : nextProps.nums
+            nums : nextProps.nums,
+            totalLevel : nextProps.totalLevel
         })
     }
     sureHandle(){
@@ -26,7 +28,7 @@ class Step2 extends React.Component {
         this.props.everyChange(index,value)
     }
     render(){
-        const {students,showNew,nums} = this.state;
+        const {students,showNew,nums,totalLevel} = this.state;
         console.log(nums)
         let newMsg = '';
         if(nums === 0){
@@ -79,11 +81,15 @@ class Step2 extends React.Component {
                 width:'20%'
             },
             {
-                title:'现有分层情况',
+                title:<span style={{position:'relative'}}>现有分层情况 <span className='nowClass'>现有层级 <span>{totalLevel}</span></span></span>,
                 dataIndex : 'now',
                 key : 'now',
                 width:'30%',
-                sorter: (a, b) =>a.now-b.now,
+                sorter: (a, b) =>{
+                    var aVal = a.now === '/' ? 0 : a.now;
+                    var bVal = b.now === '/' ? 0 : b.now;
+                    return aVal - bVal;
+                },
             },
             {
                 title:<span>新层级设定<span className='newClass'><Dropdown overlay={menu} trigger={['click']}>

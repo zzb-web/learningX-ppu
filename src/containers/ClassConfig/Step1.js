@@ -65,7 +65,8 @@ class ClassConfigStep1 extends React.Component{
                                                 </div> : null
                             }
                 </Col>
-                <Col span={14}>
+                <Col span={4}></Col>
+                <Col span={10}>
                     {
                         showTable ? <div style={{marginTop:50,textAlign:'center'}}>
                                         <Table columns={columns}

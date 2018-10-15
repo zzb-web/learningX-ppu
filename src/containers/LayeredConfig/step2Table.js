@@ -15,7 +15,6 @@ export default class Step2 extends React.Component{
         this.props.getNums(Number(value.key))
     }
     everyChange(index,value){
-        console.log(index,value)
         const {students,updateMsg} = this.props;
         const learnIDs = students.learnIDs;
         // 更新层级信息
@@ -29,6 +28,7 @@ export default class Step2 extends React.Component{
                 <Col span={1}></Col>
                 <Col span={22}>
                     <Step2Component students={this.props.students}
+                                    totalLevel={this.props.totalLevel}
                                     showNew={showNew}
                                     nums={nums}
                                     newHandle={this.newHandle.bind(this)}

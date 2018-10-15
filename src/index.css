@@ -283,7 +283,7 @@ body {
   text-align: right;
 }
 .newClass{
-  background : #fff;
+  /* background : #fff; */
   margin-left: 10px;
 }
 .save-success{
@@ -313,4 +313,9 @@ body {
 }
 .multiOne:last-child{
   border-right: 1px solid #dadada;
+}
+.nowClass{
+  position: absolute;
+  left: 100px;
+  width: 100px;
 }
