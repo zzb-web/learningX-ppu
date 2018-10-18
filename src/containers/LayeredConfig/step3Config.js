@@ -98,8 +98,8 @@ export default class Step3 extends React.Component{
             },
             curProductID : '',
             showCur : false,
-            showNew : false,
-            nums : props.nums
+            nums : props.nums,
+            unConfig : []
         }
     }
     componentWillMount(){
@@ -110,6 +110,11 @@ export default class Step3 extends React.Component{
         if(type === 1){
             this.toConfig();
         }
+        const {nums} = this.state;
+        for(var i=0;i<=nums;i++){
+            this.configHandle(i);
+        }
+    
     }
     componentWillReceiveProps(nextProps){
         const type = nextProps.type;
@@ -120,6 +125,7 @@ export default class Step3 extends React.Component{
             type : type,
             nums : nextProps.nums
         })
+
         if(type === 1){
             this.toConfig();
         }
@@ -148,7 +154,13 @@ export default class Step3 extends React.Component{
                         this.setState({
                             curProductID : curProductID
                           })
-                    }   
+                    }else{
+                        this.setState({
+                            showCur : false,
+                            curProductID : ''
+
+                        })
+                    }
                 })
             }
         }).catch(err=>{
@@ -171,6 +183,24 @@ export default class Step3 extends React.Component{
         })
         this.setState({
             showDetail : true
+        })
+    }
+    configHandle(level){
+        const {schoolID,grade,msgClass} = this.state;
+        let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}&level=${level}`;
+        Get(`/api/v3/staffs/classes/productID/?${msg}`).then(resp=>{
+            if(resp.status ===200){
+                const {unConfig} = this.state;
+                let curProductID = resp.data.productID;
+               if(curProductID === ""){
+                    unConfig.push(level);
+               }
+               this.setState({
+                   unConfig : unConfig
+               })
+            }
+        }).catch(err=>{
+
         })
     }
     configureChange(value){

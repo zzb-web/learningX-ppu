@@ -158,7 +158,8 @@ class Step3 extends React.Component {
             showCur : this.props.data.showCur,
             type : this.props.data.type,
 
-            nums : this.props.data.nums
+            nums : this.props.data.nums,
+            unConfig : this.props.data.unConfig
         })
     }
     componentWillReceiveProps(nextProps){
@@ -237,13 +238,14 @@ class Step3 extends React.Component {
             showCur : nextProps.data.showCur,
             type : nextProps.data.type,
 
-            nums : nextProps.data.nums
+            nums : nextProps.data.nums,
+            unConfig : nextProps.data.unConfig
         })
     }
 
     render(){
-        const {nums} = this.state;
-        console.log(nums)
+        const {nums,unConfig} = this.state;
+        unConfig.sort((a,b)=>a-b)
         let children = [];
         for(let i=1;i<=nums;i++){
             children.push(
@@ -294,7 +296,7 @@ class Step3 extends React.Component {
         }else{
             deliverMsg_1 = `交付优先:第${deliverPriority_1}/交付预期:${deliverExpected_1}小时以内`
         }
-
+        
         return(
                 <div>
                     {
@@ -308,6 +310,9 @@ class Step3 extends React.Component {
                                                 <Button type='primary' 
                                                         style={{width:120,marginLeft:50}}
                                                         onClick={this.props.toConfig}>去配置</Button>
+                                                {
+                                                    unConfig.length !== 0 ?<span style={{marginLeft:20}}>第{`${unConfig}`}层级未配置</span>:null
+                                                }
                                             </div>
                                             <div className='line'></div>
                                          </div> : null
