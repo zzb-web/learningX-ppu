@@ -124,7 +124,7 @@ export default class Step1 extends React.Component{
         return(
             <Row>
                 <Col span={1}></Col>
-                <Col span={8}>
+                <Col span={10}>
                     <Step1Component schoolNameInput={this.schoolNameInput.bind(this)}
                                     dataMsgInput={this.dataMsgInput.bind(this)}
                                     cityWarningHandle={this.cityWarningHandle.bind(this)}
@@ -135,7 +135,7 @@ export default class Step1 extends React.Component{
                                     classSure={this.classSure.bind(this)}
                                     data={this.state}/>
                 </Col>
-                <Col span={15}></Col>
+                <Col span={13}></Col>
             </Row>
         )
         }else{

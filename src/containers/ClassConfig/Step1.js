@@ -57,7 +57,7 @@ class ClassConfigStep1 extends React.Component{
         return(
             <Row>
                 <Col span={1}></Col>
-                <Col span={8}>
+                <Col span={10}>
                     <Step1 classSureHandle={this.classSureHandle.bind(this)} type={1}/>
                     {
                         showTipMsg ?<div className='save-success'>
@@ -65,7 +65,7 @@ class ClassConfigStep1 extends React.Component{
                                                 </div> : null
                             }
                 </Col>
-                <Col span={4}></Col>
+                <Col span={2}></Col>
                 <Col span={10}>
                     {
                         showTable ? <div style={{marginTop:50,textAlign:'center'}}>
