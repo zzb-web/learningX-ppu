@@ -10,7 +10,8 @@ import {
            PersonalInfoSureLoadable,
           //  PersonalInfoConfigureLoadable
           LayeredConfigLoadable,
-          ClassConfigLoadable
+          ClassConfigLoadable,
+          StudentLayeredLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -147,12 +148,18 @@ class Navigation extends Component {
                   openKeys={subKey}
                   selectedKeys={[key]}
                   onOpenChange={this.onOpenChange.bind(this)}>
+               
               <SubMenu key="sub1" title={<span><Icon type="global"/><span>产品管理</span></span>}>
                 <Menu.Item key="1">
                   <span>产品管理</span>
                 </Menu.Item>
                 <Menu.Item key="2">
                   <span>第一代产品设计</span>
+                </Menu.Item>
+              </SubMenu>
+              <SubMenu key="sub0" title={<span><Icon type="database"/><span>分层设计</span></span>}>
+                <Menu.Item key="6">
+                  <span>学生分层</span>
                 </Menu.Item>
               </SubMenu>
               <SubMenu key="sub2" title={<span><Icon type="book"/><span>产品配置</span></span>}>
@@ -205,7 +212,10 @@ class Navigation extends Component {
             {
               this.state.key === '5' ? <ClassConfigLoadable/> : null
             }
-            
+            {
+              this.state.key === '6' ? < StudentLayeredLoadable/> : null
+            }
+           
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2016 Created by Ant UED

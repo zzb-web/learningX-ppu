@@ -98,7 +98,7 @@ export default class Step3 extends React.Component{
             },
             curProductID : '',
             showCur : false,
-            nums : props.nums,
+            totalLevel : props.totalLevel,
             unConfig : []
         }
     }
@@ -110,8 +110,8 @@ export default class Step3 extends React.Component{
         if(type === 1){
             this.toConfig();
         }
-        const {nums} = this.state;
-        for(var i=0;i<=nums;i++){
+        const {totalLevel} = this.state;
+        for(var i=0;i<=totalLevel;i++){
             this.configHandle(i);
         }
     
@@ -123,7 +123,7 @@ export default class Step3 extends React.Component{
             grade : nextProps.grade,
             msgClass : nextProps.msgClass,
             type : type,
-            nums : nextProps.nums
+            totalLevel : nextProps.totalLevel
         })
 
         if(type === 1){

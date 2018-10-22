@@ -10,7 +10,8 @@ class Step2 extends React.Component {
             students : props.students,
             showNew :　props.showNew,
             nums : props.nums,
-            totalLevel : props.totalLevel
+            totalLevel : props.totalLevel,
+            type : props.type
         }
     }
     componentWillReceiveProps(nextProps){
@@ -18,17 +19,23 @@ class Step2 extends React.Component {
             students : nextProps.students,
             showNew : nextProps.showNew,
             nums : nextProps.nums,
-            totalLevel : nextProps.totalLevel
+            totalLevel : nextProps.totalLevel,
+            type : nextProps.type
         })
     }
     sureHandle(){
-        this.props.step2SureHandle()
+        const {type} = this.state;
+        if(type === 1){
+            this.props.step2SureHandle()
+        }else{
+            this.props.toStep3()
+        }
     }
     everyChange(index,value){
         this.props.everyChange(index,value)
     }
     render(){
-        const {students,showNew,nums,totalLevel} = this.state;
+        const {students,showNew,nums,totalLevel,type} = this.state;
         console.log(nums)
         let newMsg = '';
         if(nums === 0){
@@ -48,18 +55,6 @@ class Step2 extends React.Component {
             </Menu>
           );
         
-        // for(var i=1;i<=nums;i++){
-        //     menus_2.push(
-        //         <Menu.Item key={i}>{i}</Menu.Item>
-        //     )
-        // }
-
-        // const menu_2 = (
-        //     <Menu onClick={this.props.newHandle}>
-        //         {menus_2}
-        //     </Menu>
-        //   );
-
           for(let i=1;i<=nums;i++){
             newChildren.push(
                 <Option value={i} key={i}>{i}</Option>
@@ -91,6 +86,9 @@ class Step2 extends React.Component {
                     return aVal - bVal;
                 },
             },
+        ]
+        if(type === 1){
+            columns.push( 
             {
                 title:<span>新层级设定<span className='newClass'><Dropdown overlay={menu} trigger={['click']}>
                                                 <a className="ant-dropdown-link" href="">
@@ -101,26 +99,32 @@ class Step2 extends React.Component {
                 key : 'new',
                 width : '30%'
             }
-        ]
+            )
+        }
         let dataSource = []
         students.learnIDs.map((item,index)=>{
+           if(type === 1){
             dataSource.push({
                 key : index,
                 learnID : item.learnID,
                 name : item.name,
                 now : item.level === -1 ? '/' : item.level,
-                // new :  showNew ? <Dropdown overlay={menu_2} trigger={['click']}>
-                //                     <a className="ant-dropdown-link" href="">
-                //                     层级序号<Icon type="down" />
-                //                     </a>
-                //                 </Dropdown> : ''
                 new : showNew ? <Select style={{width:120}} 
                                         placeholder='层级序号'
                                         onChange={this.everyChange.bind(this,index)}>
                                     {newChildren}
                                 </Select> : null
             })
+           }else{
+            dataSource.push({
+                key : index,
+                learnID : item.learnID,
+                name : item.name,
+                now : item.level === -1 ? '/' : item.level
+            })
+           }
         })
+        
         return(
                 <div style={{textAlign:'center'}}>
                     <Table columns={columns}
@@ -132,7 +136,7 @@ class Step2 extends React.Component {
                     <Button type='primary' 
                             size='large' 
                             style={{width:300,marginTop:50}}
-                            onClick={this.sureHandle.bind(this)}>确认</Button>
+                            onClick={this.sureHandle.bind(this)}>{type === 1 ?'确认':'下一步'}</Button>
                 </div>
         )
     }

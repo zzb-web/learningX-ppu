@@ -1,10 +1,11 @@
 import React from 'react';
-import Step1 from './step1SelectClass.js';
-import Step2 from './step2Table.js';
-import Step3 from './step3Config.js'
+import Step1 from '../LayeredConfig/step1SelectClass.js';
+import Step2 from '../LayeredConfig/step2Table.js';
+// import Step3 from '../LayeredConfig/step3Config.js'
 import {Put,Post,Get} from '../../fetch/data.js'
-import {message} from "antd";
-class LayeredConfig extends React.Component {
+import {message,Modal} from "antd";
+const {confirm} = Modal;
+class StudentLayered extends React.Component {
     state={
         showStep1 : true,
         showStep2 : false,
@@ -46,51 +47,60 @@ class LayeredConfig extends React.Component {
         })
     }
     step2SureHandle(){
-        const {updateMsg,nums,schoolID,grade,msgClass,students} = this.state;
-        // if(nums !== 0){
-            let postMsg = {
-                schoolID: schoolID,
-                grade: grade,
-                class: msgClass,
-                totalLevel: nums,
-            }
-            Post(`/api/v3/staffs/classes/totalLevel/`,postMsg).then(resp=>{
-    
-            }).catch(err=>{
-
-            })
+        const {updateMsg,nums,students} = this.state;
+        if(nums !== 0){
             let updateArr = []
             for(var key in updateMsg){
                 updateArr.push(key)
             }
-            // if(updateArr.length === students.total){
-                let putMsg = [];
-                for(var key in updateMsg){
-                    putMsg.push({
-                        learnID: Number(key),
-                        level: updateMsg[key]
-                    })
-                }
-                Put(`/api/v3/staffs/classes/students/level/`,putMsg).then(resp=>{
-    
-                }).catch(err=>{
-    
-                })
-                this.setState({
-                    showStep2 : false,
-                    showStep3 : true
-                })
-            // }else{
-            //     message.error('有学生未选择新层级');
-            // }
-        // }else{
-        //          message.error('有学生未选择新层级');
-        // }
+            if(updateArr.length === students.total){
+                    const that = this;
+                    confirm({
+                      title: '必须进行学生分层检查',
+                      content: '确定学生分层OK?',
+                      onOk() {
+                        that.submitOK()
+                      },
+                      onCancel() {
+                        
+                      },
+                    });
+            }else{
+                message.error('有学生未选择新层级');
+            }
+        }else{
+                 message.error('有学生未选择新层级');
+        }
     }
-    toStep3(){
-        this.setState({
-            showStep2 : false,
-            showStep3 : true
+    submitOK(){
+        const {updateMsg,nums,schoolID,grade,msgClass} = this.state;
+        let postMsg = {
+            schoolID: schoolID,
+            grade: grade,
+            class: msgClass,
+            totalLevel: nums,
+        }
+        Post(`/api/v3/staffs/classes/totalLevel/`,postMsg).then(resp=>{
+
+        }).catch(err=>{
+
+        })
+
+        let putMsg = [];
+        for(var key in updateMsg){
+            putMsg.push({
+                learnID: Number(key),
+                level: updateMsg[key]
+            })
+        }
+        Put(`/api/v3/staffs/classes/students/level/`,putMsg).then(resp=>{
+            if(resp.status === 200){
+                message.success('操作成功')
+            }else{
+                message.error('操作失败');
+            }
+        }).catch(err=>{
+
         })
     }
     updateMsgHandle(data){
@@ -109,16 +119,11 @@ class LayeredConfig extends React.Component {
                                     updateMsg={updateMsg}
                                     updateMsgHandle={this.updateMsgHandle.bind(this)}
                                     getNums={this.getNums.bind(this)}
-                                    toStep3={this.toStep3.bind(this)}
-                                    type={0}/> : null}
-                {showStep3 ? <Step3 schoolID={schoolID}
-                                    totalLevel={totalLevel}
-                                    grade={grade}
-                                    msgClass={msgClass}
-                                    type={0}/> : null}
+                                    step2SureHandle={this.step2SureHandle.bind(this)}
+                                    type={1}/> : null}
             </div>
         )
     }
 }
 
-export default LayeredConfig;
+export default StudentLayered;

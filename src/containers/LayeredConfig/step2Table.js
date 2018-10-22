@@ -28,11 +28,13 @@ export default class Step2 extends React.Component{
                 <Col span={1}></Col>
                 <Col span={22}>
                     <Step2Component students={this.props.students}
+                                    type={this.props.type}
                                     totalLevel={this.props.totalLevel}
                                     showNew={showNew}
                                     nums={nums}
                                     newHandle={this.newHandle.bind(this)}
                                     everyChange={this.everyChange.bind(this)}
+                                    toStep3={this.props.toStep3}
                                     step2SureHandle={this.props.step2SureHandle}/>
                 </Col>
                 <Col span={1}></Col>

@@ -158,7 +158,7 @@ class Step3 extends React.Component {
             showCur : this.props.data.showCur,
             type : this.props.data.type,
 
-            nums : this.props.data.nums,
+            totalLevel : this.props.data.totalLevel,
             unConfig : this.props.data.unConfig
         })
     }
@@ -238,16 +238,16 @@ class Step3 extends React.Component {
             showCur : nextProps.data.showCur,
             type : nextProps.data.type,
 
-            nums : nextProps.data.nums,
+            totalLevel : nextProps.data.totalLevel,
             unConfig : nextProps.data.unConfig
         })
     }
 
     render(){
-        const {nums,unConfig} = this.state;
+        const {totalLevel,unConfig} = this.state;
         unConfig.sort((a,b)=>a-b)
         let children = [];
-        for(let i=1;i<=nums;i++){
+        for(let i=1;i<=totalLevel;i++){
             children.push(
                 <Option value={i}>{i}</Option>
             )
