@@ -4,15 +4,18 @@ import Step2Component from '../../components/LayeredConfig/step2Table.js'
 import {Get} from '../../fetch/data.js'
 export default class Step2 extends React.Component{
     state={
-        showNew : false,
         nums : 0
     }
     newHandle(value){
         this.setState({
             nums : Number(value.key),
-            showNew : true
         })
         this.props.getNums(Number(value.key))
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            nums : nextProps.nums,
+        })
     }
     everyChange(index,value){
         const {students,updateMsg} = this.props;
@@ -20,9 +23,19 @@ export default class Step2 extends React.Component{
         // 更新层级信息
         updateMsg[learnIDs[index].learnID] = value;
         this.props.updateMsgHandle(updateMsg)
+
+        students.learnIDs[index].newLevel = value;
+
+        this.setState({
+            students : students
+        })
     }
     render(){
-        const {showNew,nums} = this.state
+        const {nums} = this.state
+        let showNew = false;
+        if(nums > 0){
+            showNew = true
+        }
         return(
             <Row>
                 <Col span={1}></Col>

@@ -36,14 +36,14 @@ class Step2 extends React.Component {
     }
     render(){
         const {students,showNew,nums,totalLevel,type} = this.state;
-        console.log(nums)
+        let menus = [],menus_2 = [],newChildren = [];
         let newMsg = '';
         if(nums === 0){
-            newMsg = ''
+            newMsg = '';
+            newChildren = []
         }else{
             newMsg = nums;
         }
-        let menus = [],menus_2 = [],newChildren = [];
         for(let i=2;i<=10;i++){
             menus.push(
                  <Menu.Item key={i}>{i}</Menu.Item>
@@ -54,7 +54,6 @@ class Step2 extends React.Component {
                 {menus}
             </Menu>
           );
-        
           for(let i=1;i<=nums;i++){
             newChildren.push(
                 <Option value={i} key={i}>{i}</Option>
@@ -111,6 +110,7 @@ class Step2 extends React.Component {
                 now : item.level === -1 ? '/' : item.level,
                 new : showNew ? <Select style={{width:120}} 
                                         placeholder='层级序号'
+                                        value={item.newLevel}
                                         onChange={this.everyChange.bind(this,index)}>
                                     {newChildren}
                                 </Select> : null

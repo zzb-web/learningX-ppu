@@ -19,7 +19,8 @@ class StudentLayered extends React.Component {
         msgClass : '',
         updateMsg : {},
         nums : 0,
-        totalLevel : ''
+        totalLevel : '',
+        sureOK : 0
     }
     classSureHandle(data,schoolID,grade,msgClass){
         this.setState({
@@ -30,6 +31,26 @@ class StudentLayered extends React.Component {
             grade : grade,
             msgClass : msgClass
         })
+        this.commonClassSure(schoolID,grade,msgClass)
+    }
+    classSureHandleAgain(){
+        const {schoolID,grade,msgClass} = this.state;
+        let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}`
+        Get(`/api/v3/staffs/classes/students/?${msg}`).then(resp=>{
+            if(resp.status === 200){
+                this.setState({
+                    students : resp.data,
+                    nums : 0,
+                    updateMsg : {}
+                })
+            }
+        }).catch(err=>{
+
+        })
+        this.commonClassSure(schoolID,grade,msgClass)
+    }
+
+    commonClassSure(schoolID,grade,msgClass){
         let putMsg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}`;
         Get(`/api/v3/staffs/classes/totalLevel/?${putMsg}`).then(resp=>{
             if(resp.status === 200){
@@ -41,10 +62,27 @@ class StudentLayered extends React.Component {
 
         })
     }
+
     getNums(value){
+         const {totalLevel,students} = this.state;
+         let obj = {};
+         if(value === totalLevel){
+            students.learnIDs.map((item,index)=>{
+                item.newLevel = value
+                obj[item.learnID] = value
+            })
+         }else{
+            students.learnIDs.map((item,index)=>{
+                item.newLevel = '';
+            })
+            
+         }
         this.setState({
-            nums : value
+            nums : value,
+            students : students,
+            updateMsg : obj
         })
+       
     }
     step2SureHandle(){
         const {updateMsg,nums,students} = this.state;
@@ -96,6 +134,7 @@ class StudentLayered extends React.Component {
         Put(`/api/v3/staffs/classes/students/level/`,putMsg).then(resp=>{
             if(resp.status === 200){
                 message.success('操作成功')
+                this.classSureHandleAgain();
             }else{
                 message.error('操作失败');
             }
@@ -110,12 +149,15 @@ class StudentLayered extends React.Component {
     }
     render(){
         const {showStep1,showStep2,showStep3, students,schoolID,grade,
-            msgClass,updateMsg,totalLevel,nums} = this.state;
+            msgClass,updateMsg,totalLevel,nums,sureOK} = this.state;
         return(
             <div>
-                {showStep1 ? <Step1 classSureHandle={this.classSureHandle.bind(this)} type={0}/> : null}
+                {showStep1 ? <Step1 classSureHandle={this.classSureHandle.bind(this)} 
+                                    type={0}
+                                    sureOK={sureOK}/> : null}
                 {showStep2 ? <Step2 students={students} 
                                     totalLevel={totalLevel}
+                                    nums={nums}
                                     updateMsg={updateMsg}
                                     updateMsgHandle={this.updateMsgHandle.bind(this)}
                                     getNums={this.getNums.bind(this)}
