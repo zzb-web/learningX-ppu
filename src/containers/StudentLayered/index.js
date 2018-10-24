@@ -68,8 +68,8 @@ class StudentLayered extends React.Component {
          let obj = {};
          if(value === totalLevel){
             students.learnIDs.map((item,index)=>{
-                item.newLevel = value
-                obj[item.learnID] = value
+                item.newLevel = item.level
+                obj[item.learnID] = item.level
             })
          }else{
             students.learnIDs.map((item,index)=>{
