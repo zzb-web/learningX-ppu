@@ -70,12 +70,13 @@ class Step2 extends React.Component{
 
 
     submitOK(){
-        const {hasSelectId,schoolID,grade,msgClass} = this.state;
+        let {hasSelectId,schoolID,grade,msgClass,curProductIDs} = this.state;
+        curProductIDs = curProductIDs.concat(hasSelectId);
         let msg = {
             schoolID:schoolID,
             grade: grade,
             class: msgClass,  
-            productID: hasSelectId,
+            productID: curProductIDs,
          }   
          Put(`/api/v3/staffs/classes/productID/`,msg).then(resp=>{
             if(resp.status ===200){
@@ -97,14 +98,34 @@ class Step2 extends React.Component{
 
          })
     }
+    deleteUser(curProductID,idx){
+        const {curProductIDs} = this.state;
+        curProductIDs.splice(idx,1);
+        this.setState({
+            curProductIDs : curProductIDs
+        })
+    }
+    deleteNew(num,id){
+        let {hasSelectId,newProducts} = this.state;
+        newProducts = newProducts - 1;
+        if(hasSelectId.indexOf(id)!==-1){
+            let idx = hasSelectId.indexOf(id);
+            hasSelectId.splice(idx,1)
+        }
+        this.setState({
+            hasSelectId : hasSelectId,
+            newProducts : newProducts
+        })
+    }
     render(){
         const {newProducts,allProductId,hasSelectId,curProductIDs} = this.state;
-        console.log('xxxxxxxx',curProductIDs)
         var curProductChildren = [];
         curProductIDs.map((item,index)=>{
             curProductChildren.push(
                 <UseProduct key={index}
-                            curProductID={item}/>
+                            idx={index}
+                            curProductID={item}
+                            deleteUser={this.deleteUser.bind(this)}/>
             )
         })
 
@@ -116,20 +137,18 @@ class Step2 extends React.Component{
                             key={i} 
                             num={i}
                             hasSelectId={hasSelectId}
+                            deleteNew={this.deleteNew.bind(this)}
                             newProductChoose={this.newProductChoose.bind(this)}/>
             )
         }
 
         return(
             <div>
-              <div style={{width:'100%',height:200,overflow:'auto'}}>
+              <div style={{width:'100%',height:450,overflow:'auto'}}>
                  {
                      curProductChildren
                  }
-              </div>
-              <div style={{height:1,width:'100%',backgroundColor:'#333',marginTop:10}}></div>
-              <div style={{width:'100%',height:200,overflow:'auto'}}>
-                {
+                 {
                    NewProductChildren
                 }
               </div>
@@ -194,8 +213,14 @@ class UseProduct extends React.Component{
                 borderControl: '',
                 exceptionHandler : ''
             },
-            curProductID : props.curProductID
+            curProductID : props.curProductID,
+            idx :props.idx
         }
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            idx : nextProps.idx
+        })
     }
     componentWillMount(){
         const {curProductID} = this.props;
@@ -214,7 +239,10 @@ class UseProduct extends React.Component{
                    }
                })
     }
-
+    delete(){
+        const {curProductID,idx} = this.props;
+        this.props.deleteUser(curProductID,idx)
+    }
     render(){
         const {showCur,curProductID} = this.state;
         const {gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
@@ -228,7 +256,6 @@ class UseProduct extends React.Component{
             const errStatus = ['现在仍错的题','曾经错过的题'];
             const handles = ['全部标记为√再生成','全部标记为×再生成','不生成'];
             let deliverTimeMsg = '';
-            console.log('7777777777777',deliverTime)
         deliverTime.map((item,index)=>{
             if(item.day !== '' && item.time !== ''){
             deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
@@ -248,10 +275,16 @@ class UseProduct extends React.Component{
         return(
                 <div className='person-content' style={{marginTop:10,height:'auto'}}>
                     <div className='person-select' style={{border:'none'}}>
+                        <div>
                         <span>产品编号:</span>
                         <Input disabled 
                                 value={curProductID}
                                 style={{width:160,marginLeft:20}}/>
+                        </div>
+                        <div>
+                            <Button style={{marginLeft:80,marginTop:20}}
+                                    onClick={this.delete.bind(this)}>删除</Button>
+                        </div>
                     </div>
                     <div className='person-detail'>
                         <div style={{float:'left'}}>产品详情</div>
@@ -333,11 +366,14 @@ class NewProduct extends React.Component{
                 borderControl: '',
                 exceptionHandler : ''
             },
+            num : props.num,
+            id : ''
         }
     }
     componentWillReceiveProps(nextProps){
         this.setState({
-            hasSelectId : nextProps.hasSelectId
+            hasSelectId : nextProps.hasSelectId,
+            num : nextProps.num
         })
     }
     newProductChoose(key,id){
@@ -347,7 +383,8 @@ class NewProduct extends React.Component{
                 if(resp.data.length !== 0){
                     this.setState({
                         productData : resp.data,
-                        showNew : true
+                        showNew : true,
+                        id : id
                       })
                 }
             }else{
@@ -356,6 +393,10 @@ class NewProduct extends React.Component{
                 })
             }
         })
+    }
+    deleteNew(){
+        const {num,id} = this.state;
+        this.props.deleteNew(num,id);
     }
     render(){
         const {allProductId,num} = this.props;
@@ -372,7 +413,6 @@ class NewProduct extends React.Component{
             const errStatus = ['现在仍错的题','曾经错过的题'];
             const handles = ['全部标记为√再生成','全部标记为×再生成','不生成'];
             let deliverTimeMsg = '';
-            console.log('88888888888',deliverTime)
         deliverTime.map((item,index)=>{
             if(item.day !== '' && item.time !== ''){
             deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
@@ -388,10 +428,10 @@ class NewProduct extends React.Component{
         }else{
             deliverMsg = `交付优先:第${deliverPriority}/交付预期:${deliverExpected}小时以内`
         }
-        console.log('???????',allProductId)
         return(
             <div className='person-content' style={{marginTop:10,height:'auto'}}>
                 <div className='person-select' style={{border:'none'}}>
+                    <div>
                     <span>产品编号:</span>
                     <Select style={{width:160,marginLeft:20}}
                             combobox
@@ -406,6 +446,11 @@ class NewProduct extends React.Component{
                         )
                         }
                     </Select>
+                    </div>
+                    <div>
+                        <Button style={{marginLeft:80,marginTop:20}}
+                                onClick={this.deleteNew.bind(this)}>删除</Button>
+                    </div>
                     </div>
                     <div className='person-detail'>
                         <div style={{float:'left'}}>产品详情</div>
