@@ -99,6 +99,7 @@ class Step2 extends React.Component{
     }
     render(){
         const {newProducts,allProductId,hasSelectId,curProductIDs} = this.state;
+        console.log('xxxxxxxx',curProductIDs)
         var curProductChildren = [];
         curProductIDs.map((item,index)=>{
             curProductChildren.push(
@@ -176,6 +177,7 @@ class UseProduct extends React.Component{
                     time:'',
                 },{
                     day: '',
+                    time:''
                 },{
                     day: '',
                     time:'',
@@ -226,6 +228,7 @@ class UseProduct extends React.Component{
             const errStatus = ['现在仍错的题','曾经错过的题'];
             const handles = ['全部标记为√再生成','全部标记为×再生成','不生成'];
             let deliverTimeMsg = '';
+            console.log('7777777777777',deliverTime)
         deliverTime.map((item,index)=>{
             if(item.day !== '' && item.time !== ''){
             deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
@@ -313,6 +316,7 @@ class NewProduct extends React.Component{
                     time:'',
                 },{
                     day: '',
+                    time : ''
                 },{
                     day: '',
                     time:'',
@@ -368,6 +372,7 @@ class NewProduct extends React.Component{
             const errStatus = ['现在仍错的题','曾经错过的题'];
             const handles = ['全部标记为√再生成','全部标记为×再生成','不生成'];
             let deliverTimeMsg = '';
+            console.log('88888888888',deliverTime)
         deliverTime.map((item,index)=>{
             if(item.day !== '' && item.time !== ''){
             deliverTimeMsg =deliverTimeMsg +`${weeks[item.day]}_${item.time} `;
@@ -383,7 +388,7 @@ class NewProduct extends React.Component{
         }else{
             deliverMsg = `交付优先:第${deliverPriority}/交付预期:${deliverExpected}小时以内`
         }
-
+        console.log('???????',allProductId)
         return(
             <div className='person-content' style={{marginTop:10,height:'auto'}}>
                 <div className='person-select' style={{border:'none'}}>
