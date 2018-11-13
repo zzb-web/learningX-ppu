@@ -71,18 +71,24 @@ class Step2 extends React.Component{
     submitOK(){
         let {hasSelectId,schoolID,grade,msgClass,curProductIDs} = this.state;
         curProductIDs = curProductIDs.concat(hasSelectId);
+        let putIds = [];
+        curProductIDs.map((item,index)=>{
+            if(item!==''){
+                putIds.push(item);
+            }
+        })
         let msg = {
             schoolID:schoolID,
             grade: grade,
             class: msgClass,  
-            productID: curProductIDs,
+            productID: putIds,
          }   
          Put(`/api/v3/staffs/classes/productID/`,msg).then(resp=>{
             if(resp.status ===200){
                 message.success('操作成功');
                 const {curProductIDs} = this.state;
                 hasSelectId.map((item,index)=>{
-                    if(curProductIDs.indexOf(item) === -1){
+                    if(curProductIDs.indexOf(item) === -1 && item!==''){
                         curProductIDs.push(item)
                     }
                 })
