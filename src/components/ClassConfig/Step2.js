@@ -26,8 +26,7 @@ class Step2 extends React.Component{
             allProductId : props.data.allProductId,
             curProductIDs : props.data.curProductID,
             newProducts : props.data.newProducts,
-            hasSelectId : [],
-            newProducts : 1,
+            hasSelectId : [''],
         }
     }
     componentWillReceiveProps(nextProps){
@@ -36,21 +35,21 @@ class Step2 extends React.Component{
             curProductIDs : nextProps.data.curProductID
         })
     }
-    newProductChoose(key,id){
+    newProductChoose(num,id){
         let {hasSelectId} = this.state;
-        hasSelectId.push(id);
-
+        hasSelectId[num] = id;
         this.setState({
             hasSelectId : hasSelectId
         })
     }
 
     addNewProduct(){
+        const {hasSelectId} = this.state;
+        hasSelectId.push('');
         this.setState({
-            newProducts : this.state.newProducts+1
+            newProducts : hasSelectId
         })
     }
-
     submitHandle(){
         this.showConfirm()
     }
@@ -89,7 +88,7 @@ class Step2 extends React.Component{
                 })
                 this.setState({
                     curProductIDs : curProductIDs,
-                    newProducts : 0
+                    hasSelectId : []
                 })
             }else{
                 message.error('操作失败');
@@ -101,20 +100,16 @@ class Step2 extends React.Component{
     deleteUser(curProductID,idx){
         const {curProductIDs} = this.state;
         curProductIDs.splice(idx,1);
+        console.log(curProductIDs)
         this.setState({
             curProductIDs : curProductIDs
         })
     }
     deleteNew(num,id){
-        let {hasSelectId,newProducts} = this.state;
-        newProducts = newProducts - 1;
-        if(hasSelectId.indexOf(id)!==-1){
-            let idx = hasSelectId.indexOf(id);
-            hasSelectId.splice(idx,1)
-        }
+        let {hasSelectId} = this.state;
+        hasSelectId.splice(num,1)
         this.setState({
-            hasSelectId : hasSelectId,
-            newProducts : newProducts
+            hasSelectId : hasSelectId
         })
     }
     render(){
@@ -129,18 +124,19 @@ class Step2 extends React.Component{
             )
         })
 
-
         var NewProductChildren = [];
-        for(var i=0;i<newProducts;i++){
+        console.log('??????????????sssssss',hasSelectId)
+        hasSelectId.map((item,index)=>{
             NewProductChildren.push(
                 <NewProduct allProductId={allProductId} 
-                            key={i} 
-                            num={i}
+                            key={index} 
+                            num={index}
                             hasSelectId={hasSelectId}
+                            curProductID={item}
                             deleteNew={this.deleteNew.bind(this)}
                             newProductChoose={this.newProductChoose.bind(this)}/>
             )
-        }
+        })
 
         return(
             <div>
@@ -217,27 +213,37 @@ class UseProduct extends React.Component{
             idx :props.idx
         }
     }
-    componentWillReceiveProps(nextProps){
-        this.setState({
-            idx : nextProps.idx
-        })
-    }
     componentWillMount(){
         const {curProductID} = this.props;
-            Get(`/api/v3/staffs/products/${curProductID}/`).then(resp=>{
-                   if(resp.status === 200){
-                       if(resp.data.length !== 0){
-                           this.setState({
-                               productData : resp.data,
-                               showCur : true
-                             })
-                       }
-                   }else{
-                       this.setState({
-                           showCur : false,
-                       })
-                   }
-               })
+        this.getProductMsg(curProductID);
+    }
+    componentWillReceiveProps(nextProps){
+        const {curProductID} = nextProps;
+        if(curProductID != this.state.curProductID){
+            this.getProductMsg(curProductID);
+        }
+        this.setState({
+            idx : nextProps.idx,
+            curProductID : curProductID,
+        })
+    }
+
+    getProductMsg(curProductID){
+        console.log('???????',curProductID)
+        Get(`/api/v3/staffs/products/${curProductID}/`).then(resp=>{
+            if(resp.status === 200){
+                if(resp.data.length !== 0){
+                    this.setState({
+                        productData : resp.data,
+                        showCur : true
+                      })
+                }
+            }else{
+                this.setState({
+                    showCur : false,
+                })
+            }
+        })
     }
     delete(){
         const {curProductID,idx} = this.props;
@@ -367,17 +373,50 @@ class NewProduct extends React.Component{
                 exceptionHandler : ''
             },
             num : props.num,
-            id : ''
+            id : '',
+            curProductID : ''
         }
     }
-    componentWillReceiveProps(nextProps){
+    componentWillMount(){
+        const {curProductID} = this.props;
+        if(curProductID !==''){
+            this.getProductMsg(curProductID)
+        }
         this.setState({
-            hasSelectId : nextProps.hasSelectId,
-            num : nextProps.num
+            curProductID : curProductID
         })
     }
-    newProductChoose(key,id){
-        this.props.newProductChoose(key,id)
+    componentWillReceiveProps(nextProps){
+        const {curProductID} = nextProps;
+        if(curProductID !== this.state.curProductID){
+            if(curProductID !== ''){
+                this.getProductMsg(curProductID)
+            }
+        }
+        this.setState({
+            hasSelectId : nextProps.hasSelectId,
+            num : nextProps.num,
+            curProductID : curProductID
+        })
+    }
+    getProductMsg(id){
+        Get(`/api/v3/staffs/products/${id}/`).then(resp=>{
+            if(resp.status === 200){
+                if(resp.data.length !== 0){
+                    this.setState({
+                        productData : resp.data,
+                        showNew : true
+                      })
+                }
+            }else{
+                this.setState({
+                    showNew : false
+                })
+            }
+        })
+    }
+    newProductChoose(num,id){
+        this.props.newProductChoose(num,id)
         Get(`/api/v3/staffs/products/${id}/`).then(resp=>{
             if(resp.status === 200){
                 if(resp.data.length !== 0){
@@ -400,7 +439,7 @@ class NewProduct extends React.Component{
     }
     render(){
         const {allProductId,num} = this.props;
-        const {hasSelectId,showNew} = this.state;
+        const {hasSelectId,showNew,curProductID} = this.state;
 
         const {gradation,depth,name,level,object,epu,problemMax,pageType,problemSource ,serviceType,serviceLauncher,
             serviceStartTime,serviceEndTime,deliverType,deliverPriority,deliverTime,
@@ -435,7 +474,7 @@ class NewProduct extends React.Component{
                     <span>产品编号:</span>
                     <Select style={{width:160,marginLeft:20}}
                             combobox
-                            // value={productID_selected}
+                            value={curProductID}
                             onChange={this.newProductChoose.bind(this,num)}>
                         {
                             allProductId.map((item,index)=>
