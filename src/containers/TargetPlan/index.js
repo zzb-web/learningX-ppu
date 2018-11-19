@@ -58,7 +58,6 @@ class TargetPlan extends React.Component{
     render(){
         const {showStep1,showStep2,showStep3, students,schoolID,grade,
             msgClass,updateMsg,totalLevel} = this.state;
-            console.log(totalLevel)
         return(
             <div>
                 {showStep1 ? <Step1 classSureHandle={this.classSureHandle.bind(this)} type={0}/> : null}
