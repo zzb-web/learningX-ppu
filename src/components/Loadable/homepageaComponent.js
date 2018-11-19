@@ -93,6 +93,16 @@ const StudentLayeredComponent = Loadable({
   }
 }
 
+const TargetPlanComponent = Loadable({
+  loader: () => import('../../containers/TargetPlan/index.js'),
+  loading: MyLoadingComponent,
+});
+ class TargetPlanLoadable extends React.Component {
+  render() {
+    return <TargetPlanComponent/>;
+  }
+}
+
 
 
 export {
@@ -102,5 +112,6 @@ export {
         PersonalInfoSureLoadable,
         LayeredConfigLoadable,
         ClassConfigLoadable,
-        StudentLayeredLoadable
+        StudentLayeredLoadable,
+        TargetPlanLoadable
       }

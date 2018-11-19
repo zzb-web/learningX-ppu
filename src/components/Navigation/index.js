@@ -11,7 +11,8 @@ import {
           //  PersonalInfoConfigureLoadable
           LayeredConfigLoadable,
           ClassConfigLoadable,
-          StudentLayeredLoadable
+          StudentLayeredLoadable,
+          TargetPlanLoadable
       } from '../Loadable/homepageaComponent.js';
 import axios from 'axios';
 import './style.css';
@@ -21,7 +22,7 @@ const {SubMenu} = Menu;
 class Navigation extends Component {
   state = {
     collapsed: true,
-    key: '1',
+    key: '7',
     subKey : ['sub1'],
     showUser : 'none',
     contentHeight :　0,
@@ -162,6 +163,11 @@ class Navigation extends Component {
                   <span>学生分层</span>
                 </Menu.Item>
               </SubMenu>
+              <SubMenu key="sub4" title={<span><Icon type="file-text"/><span>目标规划</span></span>}>
+                <Menu.Item key="7">
+                  <span>班级分层目标规划</span>
+                </Menu.Item>
+              </SubMenu>
               <SubMenu key="sub2" title={<span><Icon type="book"/><span>产品配置</span></span>}>
                 <Menu.Item key="3">
                     <span>个人产品配置</span> 
@@ -213,7 +219,10 @@ class Navigation extends Component {
               this.state.key === '5' ? <ClassConfigLoadable/> : null
             }
             {
-              this.state.key === '6' ? < StudentLayeredLoadable/> : null
+              this.state.key === '6' ? <StudentLayeredLoadable/> : null
+            }
+            {
+              this.state.key === '7' ? <TargetPlanLoadable/> : null
             }
            
           </Content>
