@@ -2,6 +2,7 @@ import React from 'react';
 import Step3Component from '../../components/TargetPlan/Step3.js';
 import {message} from 'antd';
 import { Get, Post,Delete } from '../../fetch/data.js';
+import axios from 'axios';
 export default class Step3 extends React.Component{
     constructor(props){
         super();
@@ -12,16 +13,23 @@ export default class Step3 extends React.Component{
             totalLevel : props.totalLevel,
             selectLevel : '',
             target : '',
+            term : '',
             showDetail : false,
             showTable : false,
             sections : [],
             currentSections : [],
             defaultSections : '',
-            currentChapterNum : 0,
-            currentSectionNum : 0,
+            currentChapterNum : '',
+            currentSectionNum : '',
             type : '',
             targetsData : [],
-            copyData : []
+            copyData : [],
+            targetWarning : false,
+            levelWarning : false,
+            termWarning : false,
+            chapterWarning : false,
+            sectionWarning : false,
+            selectChapter : ''
         }
     }
     componentWillReceiveProps(nextProps){
@@ -38,20 +46,45 @@ export default class Step3 extends React.Component{
     }
     selectLevel(value){
         this.setState({
-            selectLevel : value
+            selectLevel : value,
+            levelWarning : false
         })
     }
     selectTarget(value){
         this.setState({
-            target : value
+            target : value,
+            targetWarning : false
         })
     }
     toPlan(){
-        this.setState({
-            showDetail : true
-        })
+        const {selectLevel, target} = this.state;
+        if(selectLevel === ''){
+            this.setState({
+                levelWarning : true
+            })
+        }
+        if(target === ''){
+            this.setState({
+                targetWarning : true
+            })
+        }
+        if(selectLevel !== '' && target !== ''){
+            this.setState({
+                showDetail : true
+            })
+        }
     }
     selectTerm(value){
+        this.setState({
+            term : value,
+            termWarning : false,
+            showTable : false,
+            currentChapterNum : '',
+            currentSectionNum : '',
+            selectChapter : '',
+            defaultSections : '',
+            currentSections : []
+        })
         Get(`/api/v3/staffs/info/chapsSects/?semester=${value}`).then(resp=>{
             if(resp.status === 200){
                 let chapters = [];
@@ -78,16 +111,20 @@ export default class Step3 extends React.Component{
     }
     selectSection(value){
         this.setState({
-            currentSections : this.state.chapters_sections[value],
+            selectChapter : value,
+            currentSections : value === 0 ? [] :this.state.chapters_sections[value],
             defaultSections : '',
-            currentChapterNum : Number(value.split('_')[1]),
-            currentSectionNum : 1
+            currentChapterNum : value === 0 ? 0 : Number(value.split('_')[1]),
+            currentSectionNum : value === 0 ? '' : 1,
+            chapterWarning : false,
+            sectionWarning : false
         })
     }
     selectPart(value){
         this.setState({
             defaultSections : value,
-            currentSectionNum : Number(value.split('_')[1])
+            currentSectionNum : value === 0 ? 0 : Number(value.split('_')[1]),
+            sectionWarning : false
         })
     }
     selectType(e){
@@ -96,21 +133,40 @@ export default class Step3 extends React.Component{
         })
     }
     searchHandle(){
-        const {schoolID,grade,msgClass,selectLevel,target,currentChapterNum,currentSectionNum,type} = this.state;
+        const {schoolID,grade,msgClass,selectLevel,target,currentChapterNum,currentSectionNum,type,term} = this.state;
+        if(term === ''){
+            this.setState({
+                termWarning : true
+            })
+        }
+
+        if(currentChapterNum === ''){
+            this.setState({
+                chapterWarning : true
+            })
+        }
+
+        if(currentSectionNum === ''){
+            this.setState({
+                sectionWarning : true
+            })
+        }
+
+        if(term !== '' && currentChapterNum !== '' && currentSectionNum !== ''){
         let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}&level=${selectLevel}&target=${target}&chapter=${currentChapterNum}&section=${currentSectionNum}&typename=${type}`;
         Get(`/api/v3/staffs/classes/targets/?${msg}`).then(resp=>{
             if(resp.status === 200){
                 this.setState({
                     targetsData : resp.data,
-                    copyData : JSON.parse(JSON.stringify(resp.data))
+                    copyData : JSON.parse(JSON.stringify(resp.data)),
+                    showTable : true
                 })
             }
         }).catch(err=>{
 
         })
-        this.setState({
-            showTable : true
-        })
+       
+        }
     }
     operationHandle(data,value){
         const {schoolID,grade,msgClass,selectLevel} = this.state;
@@ -180,69 +236,65 @@ export default class Step3 extends React.Component{
             })
             break;
             case '3':
+            let postMsg = {
+                schoolID: schoolID,  
+                grade: grade,  
+                class: msgClass,  
+                level: selectLevel, 
+                targets: [],
+            }
             copyData.map((item,index)=>{
                 if(!item.status){
-                    let postMsg = {
-                        schoolID: schoolID,  
-                        grade: grade,  
-                        class: msgClass,  
-                        level: selectLevel, 
-                        targets: [{
-                            chapter: item.chapter,
-                            section: item.section,  
-                            typename: item.typename
-                        }],
-                    }
-                    Post('/api/v3/staffs/classes/targets/',postMsg).then(resp=>{
-                        if(resp.status === 200){
-                            this.searchHandle();
-                        }else{
-                            
-                        }
-                    }).catch(err=>{
-        
+                    postMsg.targets.push({
+                        chapter: item.chapter,
+                        section: item.section,  
+                        typename: item.typename
                     })
                 }
             })
+            Post('/api/v3/staffs/classes/targets/',postMsg).then(resp=>{
+                if(resp.status === 200){
+                    message.success('操作成功');
+                    this.searchHandle();
+                }else{
+                    message.error('操作失败');
+                }
+            }).catch(err=>{
+
+            })
             break;
             case '4':
+            let postMsg_1 = {
+                schoolID: schoolID,  
+                grade: grade,  
+                class: msgClass,  
+                level: selectLevel, 
+                targets: [],
+            }
             copyData.map((item,index)=>{
-                    let postMsg = {
-                        schoolID: schoolID,  
-                        grade: grade,  
-                        class: msgClass,  
-                        level: selectLevel, 
-                        targets: [{
-                            chapter: item.chapter,
-                            section: item.section,  
-                            typename: item.typename
-                        }],
-                    }
-                    Delete('/api/v3/staffs/classes/targets/',postMsg).then(resp=>{
-                        if(resp.status === 200){
-                            this.searchHandle();
-                        }else{
-                            
-                        }
-                    }).catch(err=>{
-        
-                    })
+                postMsg_1.targets.push({
+                    chapter: item.chapter,
+                    section: item.section,  
+                    typename: item.typename
+                })
+            })
+            Delete('/api/v3/staffs/classes/targets/',postMsg_1).then(resp=>{
+                if(resp.status === 200){
+                    message.success('操作成功');
+                    this.searchHandle();
+                }else{
+                    message.error('操作失败');
+                }
+            }).catch(err=>{
+
             })
             break;
         }
     }
     render(){
-        const {totalLevel,showDetail,showTable,sections,currentSections,defaultSections,targetsData,target} = this.state;
         return(
             <div>
-                <Step3Component totalLevel={totalLevel}
-                                showDetail={showDetail}
-                                showTable={showTable}
-                                sections={sections}
-                                currentSections={currentSections}
-                                defaultSections={defaultSections}
-                                targetsData={targetsData}
-                                target={target}
+                <Step3Component data={this.state}
                                 selectLevel={this.selectLevel.bind(this)}
                                 selectTarget={this.selectTarget.bind(this)}
                                 toPlan={this.toPlan.bind(this)}

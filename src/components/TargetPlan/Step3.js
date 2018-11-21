@@ -5,49 +5,86 @@ export default class Step3Component extends React.Component{
     constructor(props){
         super();
         this.state = {
-            totalLevel : props.totalLevel,
-            showDetail : props.showDetail,
-            showTable : props.showTable,
-            sections : props.sections,
-            currentSections : props.currentSections,
-            defaultSections : props.defaultSections,
-            targetsData : props.targetsData,
-            target : props.target
+            totalLevel : props.data.totalLevel,
+            showDetail : props.data.showDetail,
+            showTable : props.data.showTable,
+            sections : props.data.sections,
+            currentSections : props.data.currentSections,
+            defaultSections : props.data.defaultSections,
+            targetsData : props.data.targetsData,
+            target : props.data.target,
+            levelWarning : props.data.levelWarning,
+            targetWarning : props.data.targetWarning,
+            termWarning : props.data.termWarning,
+            chapterWarning : props.data.chapterWarning,
+            sectionWarning : props.data.sectionWarning,
+            selectChapter : props.data.selectChapter
         }
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.totalLevel !== this.state.totalLevel){
+        if(nextProps.data.totalLevel !== this.state.totalLevel){
             this.setState({
-                totalLevel : nextProps.totalLevel
+                totalLevel : nextProps.data.totalLevel
             })
         }
-        if(nextProps.showDetail !== this.state.showDetail){
+        if(nextProps.data.showDetail !== this.state.showDetail){
             this.setState({
-                showDetail : nextProps.showDetail
+                showDetail : nextProps.data.showDetail
             })
         }
-        if(nextProps.showTable !== this.state.showTable){
+        if(nextProps.data.showTable !== this.state.showTable){
             this.setState({
-                showTable : nextProps.showTable
+                showTable : nextProps.data.showTable
             })
         }
-        if(nextProps.selectPart !== this.state.selectTarget){
+        if(nextProps.data.target !== this.state.target){
             this.setState({
-                target : nextProps.target
+                target : nextProps.data.target
             })
         } 
+        if(nextProps.data.selectChapter !== this.state.selectChapter){
+            this.setState({
+                selectChapter : nextProps.data.selectChapter
+            })
+        } 
+        if(nextProps.data.levelWarning !== this.state.levelWarning){
+            this.setState({
+                levelWarning : nextProps.data.levelWarning
+            })
+        }
+        if(nextProps.data.targetWarning !== this.state.targetWarning){
+            this.setState({
+                targetWarning : nextProps.data.targetWarning
+            })
+        }
+        if(nextProps.data.termWarning !== this.state.termWarning){
+            this.setState({
+                termWarning : nextProps.data.termWarning
+            })
+        }
+        if(nextProps.data.chapterWarning !== this.state.chapterWarning){
+            this.setState({
+                chapterWarning : nextProps.data.chapterWarning
+            })
+        }
+        if(nextProps.data.sectionWarning !== this.state.sectionWarning){
+            this.setState({
+                sectionWarning : nextProps.data.sectionWarning
+            })
+        }
         this.setState({
-            sections : nextProps.sections,
-            currentSections : nextProps.currentSections,
-            defaultSections : nextProps.defaultSections,
-            targetsData : nextProps.targetsData,
+            sections : nextProps.data.sections,
+            currentSections : nextProps.data.currentSections,
+            defaultSections : nextProps.data.defaultSections,
+            targetsData : nextProps.data.targetsData,
         })
     }
     operationHandle(data,value){
         this.props.operationHandle(data,value)
     }
     render(){
-        const {totalLevel,showDetail,showTable,sections,currentSections,defaultSections,targetsData,target} = this.state;
+        const {totalLevel,showDetail,showTable,sections,currentSections,defaultSections,targetsData,target,
+        levelWarning,targetWarning,termWarning,chapterWarning,sectionWarning,selectChapter} = this.state;
         let children = [];
         for(let i=1;i<=totalLevel;i++){
             children.push(
@@ -72,6 +109,9 @@ export default class Step3Component extends React.Component{
         })
 
         const sectionsChildren = [];
+        sectionsChildren.push(
+            <Option value={0} key={-1}>全部</Option>    
+        )
         sections.map((item,index)=>{
             sectionsChildren.push(
                 <Option value={item} key={index}>{`第${item.split('_')[1]}章`}<span style={{marginLeft:10}}>{item.split('_')[0]}</span></Option>
@@ -79,13 +119,15 @@ export default class Step3Component extends React.Component{
         })
 
         const partsChildren = [];
+        partsChildren.push(
+            <Option value={0} key={-1}>全部</Option> 
+        )
         currentSections.map((item,index)=>{
             partsChildren.push(
                 <Option value={item} key={index}>{`第${item.split('_')[1]}节`}<span style={{marginLeft:10}}>{item.split('_')[0]}</span></Option>
             )
         })
-
-
+        
         const columns = [
             {
                 title: '状态',
@@ -170,19 +212,19 @@ export default class Step3Component extends React.Component{
                 <Col span={22}>
                     <div>
                         <span className='book-title'>层级序号:</span>
-                        <Select style={{width:200,marginLeft:20}}
+                        <Select className='inputClass' style={levelWarning ? {border:'1px solid red'}:null}
                                 onChange={this.props.selectLevel}>
                             {children}
                         </Select>
 
                         <span className='book-title'>目标:</span>
-                        <Select style={{width:200,marginLeft:20}}
+                        <Select className='inputClass' style={targetWarning ? {border:'1px solid red'}:null}
                                 onChange={this.props.selectTarget}>
                             {targetChildren}
                         </Select>
 
                         <Button type='primary' 
-                                style={{width:120,marginLeft:50}}
+                                style={{width:120,marginLeft:80}}
                                 onClick={this.props.toPlan}>去规划</Button>
                     </div>
                     <div className='line'></div>
@@ -191,20 +233,19 @@ export default class Step3Component extends React.Component{
                             showDetail ? <div style={{marginTop:30}}>
                                             <div>
                                                 <span className='book-title'>学期:</span>
-                                                <Select style={{width:200,marginLeft:20}}
+                                                <Select  className='inputClass' style={termWarning ? {border:'1px solid red'}:null}
                                                         onChange={this.props.selectTerm}>
                                                     {tremChildren}
                                                 </Select>
-
                                                 <span className='book-title'>章:</span>
-                                                <Select style={{width:200,marginLeft:20}}
+                                                <Select  className='inputClass' style={chapterWarning ? {border:'1px solid red'}:null}
+                                                        value={selectChapter}
                                                         onChange={this.props.selectSection}>
                                                     {sectionsChildren}
                                                 </Select>
-
                                                 <span className='book-title'>节:</span>
-                                                <Select style={{width:200,marginLeft:20}}
-                                                        value={defaultSections===''?currentSections[0]:defaultSections}
+                                                <Select  className='inputClass' style={sectionWarning ? {border:'1px solid red'}:null}
+                                                        value={defaultSections===''? currentSections[0] : defaultSections}
                                                         onChange={this.props.selectPart}>
                                                     {partsChildren}
                                                 </Select>
@@ -214,7 +255,7 @@ export default class Step3Component extends React.Component{
                                                 <Input style={{width:200,marginLeft:20}} onChange={this.props.selectType}/>
 
                                                 <Button type='primary' 
-                                                        style={{width:120,marginLeft:330}}
+                                                        style={{width:200,marginLeft:360}}
                                                         onClick={this.props.searchHandle}>搜索</Button>
                                             </div>
                                         </div> : null

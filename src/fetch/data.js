@@ -47,9 +47,9 @@ async function Patch(url, param){
   return status;
 }
 
-async function Delete(url){
+async function Delete(url,data){
   var status;
-  await axios.delete(url)
+  await axios.delete(url,{data:data})
   .then(function (response) {
    status = response;
   })

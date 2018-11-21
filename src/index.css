@@ -319,3 +319,8 @@ body {
   left: 100px;
   width: 100px;
 }
+
+.inputClass{
+  width: 200px;
+  margin-left: 20px;
+}
