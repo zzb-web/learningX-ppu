@@ -153,7 +153,7 @@ export default class Step3 extends React.Component{
         }
 
         if(term !== '' && currentChapterNum !== '' && currentSectionNum !== ''){
-        let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}&level=${selectLevel}&target=${target}&chapter=${currentChapterNum}&section=${currentSectionNum}&typename=${type}`;
+        let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}&level=${selectLevel}&target=${target}&semester=${term}&chapter=${currentChapterNum}&section=${currentSectionNum}&typename=${type}`;
         Get(`/api/v3/staffs/classes/targets/?${msg}`).then(resp=>{
             if(resp.status === 200){
                 this.setState({
