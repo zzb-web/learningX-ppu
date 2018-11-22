@@ -217,7 +217,7 @@ export default class Step3Component extends React.Component{
                             {children}
                         </Select>
 
-                        <span className='book-title'>目标:</span>
+                        <span className='book-title'>考试:</span>
                         <Select className='inputClass' style={targetWarning ? {border:'1px solid red'}:null}
                                 onChange={this.props.selectTarget}>
                             {targetChildren}

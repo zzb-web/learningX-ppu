@@ -113,9 +113,9 @@ export default class Step3 extends React.Component{
         this.setState({
             selectChapter : value,
             currentSections : value === 0 ? [] :this.state.chapters_sections[value],
-            defaultSections : '',
+            defaultSections : 0,
             currentChapterNum : value === 0 ? 0 : Number(value.split('_')[1]),
-            currentSectionNum : value === 0 ? '' : 1,
+            currentSectionNum : 0,
             chapterWarning : false,
             sectionWarning : false
         })
@@ -153,7 +153,7 @@ export default class Step3 extends React.Component{
         }
 
         if(term !== '' && currentChapterNum !== '' && currentSectionNum !== ''){
-        let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}&level=${selectLevel}&target=${target}&semester=${term}&chapter=${currentChapterNum}&section=${currentSectionNum}&typename=${type}`;
+        let msg = `schoolID=${schoolID}&grade=${grade}&class=${msgClass}&level=${selectLevel}&exam=${target}&semester=${term}&chapter=${currentChapterNum}&section=${currentSectionNum}&typename=${type}`;
         Get(`/api/v3/staffs/classes/targets/?${msg}`).then(resp=>{
             if(resp.status === 200){
                 this.setState({
@@ -169,12 +169,13 @@ export default class Step3 extends React.Component{
         }
     }
     operationHandle(data,value){
-        const {schoolID,grade,msgClass,selectLevel} = this.state;
+        const {schoolID,grade,msgClass,selectLevel,target} = this.state;
         let postMsg = {
             schoolID: schoolID,  
             grade: grade,  
             class: msgClass,  
             level: selectLevel, 
+            exam : target,
             targets: [{
                 chapter: data.chapter,
                 section: data.section,  
@@ -210,7 +211,7 @@ export default class Step3 extends React.Component{
     }
     fastHandle(value){
         let {copyData} = this.state;
-        const {schoolID,grade,msgClass,selectLevel} = this.state;
+        const {schoolID,grade,msgClass,selectLevel,target} = this.state;
         let key = value.key;
         switch(key){
             case '1':
@@ -241,6 +242,7 @@ export default class Step3 extends React.Component{
                 grade: grade,  
                 class: msgClass,  
                 level: selectLevel, 
+                exam : target,
                 targets: [],
             }
             copyData.map((item,index)=>{
@@ -269,6 +271,7 @@ export default class Step3 extends React.Component{
                 grade: grade,  
                 class: msgClass,  
                 level: selectLevel, 
+                exam : target,
                 targets: [],
             }
             copyData.map((item,index)=>{
